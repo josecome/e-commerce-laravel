@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    Route::get('home',[ProdCategoriesController::class,'getProdCategories']);
+    //return view('home');
 });
 
 Route::get('/dashboard', function () {
