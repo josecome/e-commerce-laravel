@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProdCategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,11 +14,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    Route::get('home',[ProdCategoriesController::class,'getProdCategories']);
-    //return view('home');
-});
+Route::get('/',[ProdCategoriesController::class,'getProdCategories']);
+/*Route::get('/', function () {
+    return view('home');
+});*/
 
 Route::get('/dashboard', function () {
     return view('dashboard');

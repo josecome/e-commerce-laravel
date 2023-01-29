@@ -18,11 +18,19 @@ class ProdCategoriesSeeder extends Seeder
     {
         DB::table('prod_categories')->insert([
             [
-                'name'=>'Oppo mobile',
-                "price"=>"300",
-                "description"=>"A smartphone with 8gb ram and much more feature",
-                "category"=>"mobile",
-                "gallery"=>"https://assetscdn1.paytm.com/images/catalog/product/M/MO/MOBOPPO-A52-6-GFUTU6297453D3D253C/1592019058170_0..png"
+                'category'=>'TV',
+                "description"=>"All sizes",
+                "user_id"=>1
+            ],
+            [
+                'category'=>'CellPhone',
+                "description"=>"All sizes",
+                "user_id"=>1
+            ],
+            [
+                'category'=>'Tables',
+                "description"=>"All sizes",
+                "user_id"=>1
             ]
         ]);
     }
