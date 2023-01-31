@@ -7,6 +7,8 @@
     <title>Products</title>
 </head>
 <body>
-
+    @foreach ($prod as $rw)
+       <span>{{ $rw["id"] }}</span>
+    @endforeach
 </body>
 </html>

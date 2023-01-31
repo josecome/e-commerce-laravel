@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
@@ -16,20 +17,23 @@ class ProductSeeder extends Seeder
     {
         DB::table('products')->insert([
             [
-                'category'=>'TV',
-                "description"=>"All sizes",
+                'product'=>'LCD200',
+                "description"=>"40X40",
+                "category"=>"TV",
                 "user_id"=>1
             ],
             [
-                'category'=>'CellPhone',
-                "description"=>"All sizes",
+                'product'=>'LCD400',
+                "description"=>"60X60",
+                "category"=>"TV",
                 "user_id"=>1
             ],
             [
-                'category'=>'Tables',
-                "description"=>"All sizes",
+                'product'=>'LCD600',
+                "description"=>"80X80",
+                "category"=>"TV",
                 "user_id"=>1
-            ]
+            ],
         ]);
     }
 }

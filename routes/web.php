@@ -15,6 +15,7 @@ use App\Http\Controllers\ProdCategoriesController;
 |
 */
 Route::get('/',[ProdCategoriesController::class,'getProdCategories']);
+Route::get('/product/{id}',[ProdCategoriesController::class, 'getProducts'])->name('product');
 /*Route::get('/', function () {
     return view('home');
 });*/
