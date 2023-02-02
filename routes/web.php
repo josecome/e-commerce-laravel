@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdCategoriesController;
+use App\Http\Controllers\Controllers;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::get('/product/{id}',[ProdCategoriesController::class, 'getProducts'])->na
 /*Route::get('/', function () {
     return view('home');
 });*/
+Route::get('/logout',[Controllers::class,'logout']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
