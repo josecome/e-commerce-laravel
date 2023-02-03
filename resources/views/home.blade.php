@@ -10,11 +10,10 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album-rtl/">
 
-
-
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
       .bd-placeholder-img {
@@ -157,12 +156,62 @@
           </div>
         </div>
 @endforeach
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+Add New Category
+</button>
+</div>
       </div>
     </div>
   </div>
 
 </main>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="" action="/add_category">
+@csrf
+    <div class="">
+<br>
+    <div class="mb-3">
+    <label class=""></label>
+    <div class="">
+    <h3>Details</h3>
+    </div>
+  </div>
+    <div class="mb-3">
+    <label class="form-label">Category:</label>
+    <div class="">
+        <input type="text" name="category" id="category" required maxlength="20" value=""/>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description:</label>
+    <div class="">
+        <input type="text" name="description" id="id_name" required maxlength="100" value="" />
+    </div>
+  </div>
+    <div class="mb-3">
+    <label class=""></label>
+    <button type="submit" class="btn btn-success">Save</button>
+  </div>
+    </div>
+</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
+      </div>
+    </div>
+  </div>
+</div>
 <footer class="text-muted py-5">
   <div class="container">
     <p class="float-end mb-1">

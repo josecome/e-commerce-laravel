@@ -20,9 +20,10 @@ Route::get('/',[ProdCategoriesController::class,'getProdCategories']);
 Route::get('/product/{category}',[ProdCategoriesController::class, 'getProducts'])->name('product');
 Route::get('/product_form',[ProdCategoriesController::class, 'addNewProductForm'])->name('product_form');
 Route::get('/add_product',[ProdCategoriesController::class, 'addNewProduct']);
-/*Route::get('/', function () {
-    return view('home');
-});*/
+Route::get('/add_category',[ProdCategoriesController::class, 'addNewCategory'])->name('add_category');
+Route::get('/add_successfull', function () {
+    return view('add_successfull');
+});
 Route::get('/logout',[Controllers::class,'logout']);
 
 Route::get('/dashboard', function (Request $req) {

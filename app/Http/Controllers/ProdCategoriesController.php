@@ -41,4 +41,17 @@ class ProdCategoriesController extends Controller
     function addNewProductForm(){
         return view('/product_form');
     }
+    function addNewCategory(Request $req)
+    {
+        $userId = Auth::id();
+
+        $ctgy = new ProdCategories;
+        $ctgy->category = $req->category;
+        $ctgy->description = $req->description;
+        $ctgy->user_id = $userId;
+        $ctgy->save();
+
+        return Redirect::to('/add_successfull');
+
+    }
 }
