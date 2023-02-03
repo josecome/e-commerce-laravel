@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
-    <title>مثzل zلألبوم · Bootstrap v5.3</title>
+    <title>E-commerce</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album-rtl/">
 
@@ -142,7 +142,7 @@
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: fffff text" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>
             <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-             <a   href="{{ URL('/product/'.$row->id)}}">{{$row->category}}</a>
+             <a   href="{{ URL('/product/'.$row->category)}}">{{$row->category}}</a>
             </text></svg>
             <div class="card-body">
               <p class="card-text">{{$row->description}}</p>

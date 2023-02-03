@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdCategoriesController;
 use App\Http\Controllers\Controllers;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +17,16 @@ use App\Http\Controllers\Controllers;
 |
 */
 Route::get('/',[ProdCategoriesController::class,'getProdCategories']);
-Route::get('/product/{id}',[ProdCategoriesController::class, 'getProducts'])->name('product');
+Route::get('/product/{category}',[ProdCategoriesController::class, 'getProducts'])->name('product');
+Route::get('/product_form',[ProdCategoriesController::class, 'addNewProductForm'])->name('product_form');
+Route::get('/add_product',[ProdCategoriesController::class, 'addNewProduct']);
 /*Route::get('/', function () {
     return view('home');
 });*/
 Route::get('/logout',[Controllers::class,'logout']);
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $req) {
+    //$req->session()->put('user', $user);
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
