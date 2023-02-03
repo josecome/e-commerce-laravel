@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use App\Models\ProdCategories;
 use App\Models\Product;
 
@@ -43,6 +44,9 @@ class ProdCategoriesController extends Controller
     }
     function addNewCategory(Request $req)
     {
+        if (! Gate::allows('addupdate_ctgry')) {
+            abort(403);
+        }
         $userId = Auth::id();
 
         $ctgy = new ProdCategories;
