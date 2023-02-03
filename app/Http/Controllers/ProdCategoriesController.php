@@ -49,13 +49,17 @@ class ProdCategoriesController extends Controller
         if (! $response->allowed()) {
             return $response->message() . " <a href='/'>Return</a>";
         }
-
         /*if (! Gate::allows('addupdate_ctgry')) {
             abort(403);
         }*/
 
         $userId = Auth::id();
-
+        $user = Auth::user();
+        if ($user->can('create', ProdCategories::class)) {
+            echo 'Current logged in user is allowed to create new articles.';
+          } else {
+            return 'Not Authorized';
+          }
         $ctgy = new ProdCategories;
         $ctgy->category = $req->category;
         $ctgy->description = $req->description;

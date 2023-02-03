@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\ProdCategories;
+use App\Policies\ProdCategoriesPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        ProdCategories::class => ProdCategoriesPolicy::class
     ];
 
     /**
@@ -28,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         function isSuperAdmin(){
-           return TRUE;
+           return TRUE; //Will be updated
         }
         Gate::define('addupdate_ctgry', function () {
             //return isSuperAdmin();
