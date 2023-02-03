@@ -44,9 +44,16 @@ class ProdCategoriesController extends Controller
     }
     function addNewCategory(Request $req)
     {
-        if (! Gate::allows('addupdate_ctgry')) {
-            abort(403);
+        $response = Gate::inspect('addupdate_ctgry');
+
+        if (! $response->allowed()) {
+            return $response->message() . " <a href='/'>Return</a>";
         }
+
+        /*if (! Gate::allows('addupdate_ctgry')) {
+            abort(403);
+        }*/
+
         $userId = Auth::id();
 
         $ctgy = new ProdCategories;
