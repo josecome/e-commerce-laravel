@@ -21,9 +21,11 @@ Route::get('/product/{category}',[ProdCategoriesController::class, 'getProducts'
 Route::get('/product_form',[ProdCategoriesController::class, 'addNewProductForm'])->name('product_form');
 Route::get('/add_product',[ProdCategoriesController::class, 'addNewProduct']);
 Route::get('/add_category',[ProdCategoriesController::class, 'addNewCategory'])->name('add_category');
+Route::get('/products_for_sale/{category}',[ProdCategoriesController::class, 'ProductsForSale'])->name('products_for_sale');
 Route::get('/add_successfull', function () {
     return view('add_successfull');
 });
+
 Route::get('/logout',[Controllers::class,'logout']);
 
 Route::get('/dashboard', function (Request $req) {

@@ -21,7 +21,11 @@ class ProdCategoriesController extends Controller
     function getProducts($category)
     {
         $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return view('product',['prod'=>$data]);
+        return view('product', ['prod'=>$data]);
+    }
+    function ProductsForSale($category){
+        $data = DB::table('products')->select('*')->where('category', $category)->get();
+        return view('/products_for_sale', ['prod'=>$data]);
     }
     function addNewProduct(Request $req)
     {
@@ -42,6 +46,7 @@ class ProdCategoriesController extends Controller
     function addNewProductForm(){
         return view('/product_form');
     }
+
     function addNewCategory(Request $req)
     {
         $response = Gate::inspect('addupdate_ctgry');
