@@ -1,6 +1,6 @@
 # E-Commerce Webpage
 
-This project aim to demostrate how can E-Commerce webpage can be developed using PHP + Laravel.
+This project aim to demostrate how E-Commerce webpage can be developed using PHP + Laravel.
 
 ## To run the project
 
