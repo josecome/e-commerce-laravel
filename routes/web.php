@@ -22,6 +22,7 @@ Route::get('/product_form',[ProdCategoriesController::class, 'addNewProductForm'
 Route::get('/add_product',[ProdCategoriesController::class, 'addNewProduct']);
 Route::get('/add_category',[ProdCategoriesController::class, 'addNewCategory'])->name('add_category');
 Route::get('/products_for_sale/{category}',[ProdCategoriesController::class, 'ProductsForSale'])->name('products_for_sale');
+Route::get('/products_for_sale_list/{category}',[ProdCategoriesController::class, 'ProductsForSaleList'])->name('products_for_sale_list');
 Route::get('/add_successfull', function () {
     return view('add_successfull');
 });

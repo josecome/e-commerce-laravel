@@ -23,9 +23,14 @@ class ProdCategoriesController extends Controller
         $data = DB::table('products')->select('*')->where('category', $category)->get();
         return view('product', ['prod'=>$data]);
     }
-    function ProductsForSale($category){
+    function ProductsForSale($category)
+    {
+        return view('/products_for_sale');
+    }
+    function ProductsForSaleList($category)
+    {
         $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return view('/products_for_sale', ['prod'=>$data]);
+        return json_decode($data);
     }
     function addNewProduct(Request $req)
     {
