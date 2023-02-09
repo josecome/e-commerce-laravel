@@ -61,7 +61,7 @@
               <p class="card-text">[[ product_item.description ]]</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button"  @click="checkProduct(product_item.id, product_item.product)"
+                  <button type="button"  @click="checkProduct($event, product_item.id, product_item.product)"
                         class="btn btn-sm btn-outline-secondary"
                         style="color: white;"
                         :class="[ product_status[product_item.id] === 1 ? 'addToChrt' : 'rmvToChrt' ]"
@@ -100,10 +100,13 @@
         }
     },
     methods: {
-        checkProduct: function (id, b){
+        checkProduct: function (e, id, b){
             //alert("Print:" + a + "," + b);
+            var chk = e.target.textContent;
+            console.log(chk)
             this.product_status[id] = 1;
-            this.count++;
+            chk === "Add to Chart" ? this.count++ : this.count--;
+            chk === "Add to Chart" ? this.product_status[id] = 1 : this.product_status[id] = 0;
         },
     }
   }).mount('#app')
