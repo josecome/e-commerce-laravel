@@ -94,14 +94,12 @@
         try{
             const rs = await axios.get('/products_for_sale_list/{{ Request::segment(2) }}')
             this.list_of_products = rs.data
-            //console.log(rs.data)
         } catch(err) {
             console.log(err)
         }
     },
     methods: {
         checkProduct: function (e, id, b){
-            //alert("Print:" + a + "," + b);
             var chk = e.target.textContent;
             console.log(chk)
             this.product_status[id] = 1;
