@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('product');
             $table->string('description');
-            $table->decimal('price', 10, 2);
             $table->string('category');
             $table->unsignedBigInteger('user_id');
             $table->foreign('category')->references('category')->on('prod_categories')->onDelete('cascade');

@@ -72,7 +72,7 @@
                     >
                         [[ product_status[product_item.id] !== null && product_status[product_item.id] === 1 ? 'Remove from Chart' : 'Add to Chart' ]]
                    </button>
-                  <!--<button type="button" class="btn btn-sm btn-outline-secondary">qq</button>-->
+                  <label class="btn btn-sm btn-outline-secondary">$[[ product_item.price ]]</label>
                 </div>
                 <div v-if="product_status[product_item.id] === 1" class="bi bi-cart-check Icn" style="color: #239B56;"></div>
               </div>
@@ -96,7 +96,9 @@
           class="col"
           style="border-bottom: 2px solid #BFC9CA; padding: 6px;"
           >
-          [[ product_item_in_chart.product ]] <i @click="removeProduct(product_item_in_chart.id)" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
+          [[ product_item_in_chart.product ]]
+          <span style="padding-left: 20px;">[[ product_item_in_chart.price ]]</span>
+          <i @click="removeProduct(product_item_in_chart.id)" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
           </div>
         </div>
         <div class="modal-footer">
