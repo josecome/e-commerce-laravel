@@ -48,6 +48,7 @@
     <div class="container">
         <div id="app" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div style="height: 60px; width: 100%;">
+            <span style="float: left;"><strong></strong></span>
             <a href="#" class="notification" style="float: right;"
             data-toggle="modal" data-target="#myModal"
             >
@@ -57,9 +58,13 @@
         </div>
         <div v-for="product_item in list_of_products" :key="id" class="col">
             <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: fffff text" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-             <a   href="{{ URL('/chart/')}}">[[ product_item.product ]]</a>
+            <text x="80%" y="80%" fill="#eceeef" dy=".3em">
+             <a href="{{ URL('/chart/')}}" >
+                <img :src="[ '/images/products/' + product_item.image_link ]"
+                     :title="[ product_item.product ]"
+                     style="width: 100%; height: 100%;"
+                />
+            </a>
             </text></svg>
             <div class="card-body" style='background-color: #D4E6F1;'>
               <p class="card-text">[[ product_item.description ]]</p>
