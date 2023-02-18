@@ -47,9 +47,9 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div id="app" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div style="height: 60px; width: 100%;">
-            <span style="float: left;"><strong></strong></span>
-            <a href="#" class="notification" style="float: right;"
+        <div style="height: 60px; width: 100%; background-color: #EAEDED;">
+            <span style="float: left; font-size: 28px; padding: 8px;"><strong>Available Products</strong></span>
+            <a href="#" class="notification" style="float: right; padding: 8px;"
             data-toggle="modal" data-target="#myModal"
             >
                 <span class="bi bi-cart-check Icn"></span>
