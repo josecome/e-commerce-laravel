@@ -105,6 +105,7 @@
           <span style="padding-left: 20px;">[[ product_item_in_chart.price ]]</span>
           <i @click="removeProduct(product_item_in_chart.id)" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
           </div>
+          <strong>Total</strong> [[ list_of_products_in_chart.reduce((currentTotal, item) => { return Number(item.price) + Number(currentTotal) }, 0) ]]
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Save</button>
