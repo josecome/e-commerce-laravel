@@ -1,5 +1,9 @@
 # E-Commerce Webpage
 
+<img src="public/home.jpg">
+Products in TV category. Adding products to Chart
+<img src="public/products.jpg">
+
 This project aim to demostrate how E-Commerce webpage can be developed using PHP + Laravel
 
 ## To run the project
