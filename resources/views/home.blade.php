@@ -141,7 +141,7 @@
           <div class="card shadow-sm">
              <text x="80%" y="80%" fill="#eceeef" dy=".3em">
                 <a href="{{ URL('/products_for_sale/'.$row->category)}}">
-                    <img src="{{ URL::to('/') }}/images/prod_categories/tv.jpg"
+                    <img src="{{ asset( '/images/prod_categories/' . $row->image_link) }} "
                         alt="{{$row->category}}"
                         title="{{$row->category}}"
                     />
