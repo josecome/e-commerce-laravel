@@ -123,12 +123,12 @@
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Under construction</h1>
-        <p class="lead text-muted">Come next time to see updates</p>
-        <p>
+        <h1 class="fw-light">Choose you products</h1>
+        <p class="lead text-muted">Find products by category</p>
+        <!--<p>
           <a href="#" class="btn btn-primary my-2">zzzzzz</a>
           <a href="#" class="btn btn-secondary my-2">nn</a>
-        </p>
+        </p>-->
       </div>
     </div>
   </section>
@@ -219,11 +219,7 @@ Add New Category
 </div>
 <footer class="text-muted py-5">
   <div class="container">
-    <p class="float-end mb-1">
-      <a href="#">qqqq</a>
-    </p>
-    <p class="mb-1">aaaaaa</p>
-    <p class="mb-0"><a href="/"> link</a> <a href="../getting-started/introduction/ "> gggg</a>.</p>
+    <p class="mb-1">Author: <a href="https://github.com/josecome" style="text-decoration: none">Jos&eacute; Com&eacute;</a></p>
   </div>
 </footer>
 
