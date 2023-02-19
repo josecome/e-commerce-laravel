@@ -139,10 +139,14 @@
 @foreach ($prodcat as $row)
         <div class="col">
           <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: fffff text" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-             <a href="{{ URL('/products_for_sale/'.$row->category)}}">{{$row->category}}</a>
-            </text></svg>
+             <text x="80%" y="80%" fill="#eceeef" dy=".3em">
+                <a href="{{ URL('/products_for_sale/'.$row->category)}}">
+                    <img src="{{ URL::to('/') }}/images/prod_categories/tv.jpg"
+                        alt="{{$row->category}}"
+                        title="{{$row->category}}"
+                    />
+                </a>
+            </text>
             <div class="card-body">
               <p class="card-text">{{$row->description}}</p>
               <div class="d-flex justify-content-between align-items-center">
