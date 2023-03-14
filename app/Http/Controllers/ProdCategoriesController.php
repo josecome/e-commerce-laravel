@@ -73,6 +73,7 @@ class ProdCategoriesController extends Controller
         $ctgy = new ProdCategories;
         $ctgy->category = $req->category;
         $ctgy->description = $req->description;
+        $ctgy->catname = $req->catname;
         $ctgy->user_id = $userId;
         $ctgy->save();
 

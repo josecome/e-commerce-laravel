@@ -203,7 +203,13 @@ Add New Category
         <input type="text" name="description" id="id_name" required maxlength="100" value="" />
     </div>
   </div>
-    <div class="mb-3">
+  <div class="mb-3">
+    <label class="form-label">Image Upload:</label>
+    <div class="">
+        <input type="file" id="id_file" required maxlength="100" />
+    </div>
+  </div>
+  <div class="mb-3">
     <label class=""></label>
     <button type="submit" class="btn btn-success">Save</button>
   </div>
