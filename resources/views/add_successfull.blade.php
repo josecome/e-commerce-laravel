@@ -7,10 +7,10 @@
     <title>Result</title>
 </head>
 <body>
-    Category added successfully!
+    {{ Request::get("p") }}
     <script>
         const goToHomePage = () => {window.location.replace('/');}
-        const myTimeout = setTimeout(goToHomePage, 1000);
+        const waitingTime = setTimeout(goToHomePage, 4000);
     </script>
 </body>
 </html>
