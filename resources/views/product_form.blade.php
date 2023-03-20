@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>Add New Product</h1>
-<form class="" action="/add_product">
+<form class="" method="POST" action="/add_product" enctype="multipart/form-data">
 @csrf
     <div class="">
 <br>
@@ -30,6 +30,18 @@
     <label class="form-label">Description:</label>
     <div class="">
         <input type="text" name="description" id="id_name" required maxlength="100" value="" />
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Price:</label>
+    <div class="">
+        <input type="number" name="price" id="id_price" required maxlength="100" value="" />
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image Upload:</label>
+    <div class="">
+        <input type="file" name="image" id="id_file" />
     </div>
   </div>
     <input type="hidden" name="category" value="{{ request()->pg }}" />

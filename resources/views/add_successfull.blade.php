@@ -10,7 +10,7 @@
     {{ Request::get("p") }}
     <script>
         const goToHomePage = () => {window.location.replace('/');}
-        const waitingTime = setTimeout(goToHomePage, 4000);
+        const waitingTime = setTimeout(goToHomePage, 9000);
     </script>
 </body>
 </html>

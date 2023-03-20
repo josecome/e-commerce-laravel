@@ -35,19 +35,26 @@ class ProdCategoriesController extends Controller
     }
     function addNewProduct(Request $req)
     {
-        $category = $req->category;
-
-        $userId = Auth::id();
-
-        $prod = new Product;
-        $prod->product = $req->product;
-        $prod->description = $req->description;
-        $prod->category = $category;
-        $prod->user_id = $userId;
-        $prod->save();
-
-        return Redirect::to('/product/{$category}');
-
+        $result = "Record Successfully added!";
+        $type_of_item = "products";
+        $filename = $this->saveImage($req,  $type_of_item);
+        if(strpos($filename, "Error") !== false){
+            return Redirect::to('/add_successfull?p=Error Ocurred ' . $filename);
+        }
+        $userId = 1;//Auth::id();
+        try{
+            $prod = new Product;
+            $prod->product = $req->product;
+            $prod->description = $req->description;
+            $prod->category = $req->category;
+            $prod->price = $req->price;
+            $prod->image_link = $filename;
+            $prod->user_id = $userId;
+            $prod->save();
+        } catch(Exception $e) {
+            $result = 'Error ocurred: ' . $e->getMessage();
+        }
+        return Redirect::to('/product/{$category}?p='. $result);
     }
     function addNewProductForm(){
         return view('/product_form');
@@ -72,12 +79,13 @@ class ProdCategoriesController extends Controller
         } else {
             //return 'Not Authorized';
         }*/
-        $path = "";
+        $type_of_item = "prod_categories";
+        $filename = $this->saveImage($req, $type_of_item);
+        if(strpos($filename, "Error") !== false){
+            return Redirect::to('/add_successfull?p=Error Ocurred');
+        }
+
         try {
-            $img = $req->file('image');
-            $filename = $img->getClientOriginalName();
-            //$path = $req->file('image')->store('public/images/prod_categories');
-            $path = $req->file('image')->storeAs('public/images/prod_categories', $filename);
             $ctgy = new ProdCategories;
             $ctgy->category = $req->category;
             $ctgy->description = $req->description;
@@ -89,5 +97,18 @@ class ProdCategoriesController extends Controller
         }
         return Redirect::to('/add_successfull?p=' . $result);
 
+    }
+    function saveImage(Request $req, $type_of_item){
+        $result = "saved";
+        try {
+            $img = $req->file('image');
+            $filename = $img->getClientOriginalName();
+            //$path = $req->file('image')->store('public/images/prod_categories');
+            $path = $req->file('image')->storeAs('public/images/' . $type_of_item, $filename); //By give 'public/images/' image will be saved in 'storage/app/public/images/'
+            //Having link in public folder, this image will be available to be accessed through link.
+            return $filename;
+        } catch(Exception $e) {
+            return 'Error ocurred: ' . $e->getMessage();
+        }
     }
 }

@@ -21,6 +21,7 @@
         <th>Description</th>
         <th>Category</th>
         <th>User ID</th>
+        <th>Image</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -31,6 +32,7 @@
         <td>{{ $rw->description }}</td>
         <td>{{ $rw->category }}</td>
         <td>{{ $rw->user_id }}</td>
+        <td><img src="{{ asset( '/storage/images/products/' . $rw->image_link) }}" style="width: 60px; height: 40px;" /></td>
         <td>
             <form action="/edit/" style="float: left; padding-right: 4px;">
                 <button type="submit" class="btn btn-primary">Edit</button>

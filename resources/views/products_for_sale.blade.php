@@ -60,7 +60,7 @@
             <div class="card shadow-sm">
             <text x="80%" y="80%" fill="#eceeef" dy=".3em">
              <a href="{{ URL('/chart/')}}" >
-                <img :src="[ '/images/products/' + product_item.image_link ]"
+                <img :src="[ '/storage/images/products/' + product_item.image_link ]"
                      :title="[ product_item.product ]"
                      style="width: 100%; height: 100%;"
                 />
