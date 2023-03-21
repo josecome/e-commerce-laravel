@@ -41,6 +41,9 @@
         .Icn{
            font-size: 2em;
         }
+        #prodInChart td {
+            padding-right: 60px;
+        }
     </style>
 </head>
 <body>
@@ -95,17 +98,41 @@
           <h4 class="modal-title" style="float: left;"><strong>Products in Chart</strong></h4>
           <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
         </div>
-        <div class="modal-body">
-          <div v-for="product_item_in_chart in list_of_products_in_chart"
-          :key="id"
-          class="col"
-          style="border-bottom: 2px solid #BFC9CA; padding: 6px;"
-          >
-          [[ product_item_in_chart.product ]]
-          <span style="padding-left: 20px;">[[ product_item_in_chart.price ]]</span>
-          <i @click="removeProduct(product_item_in_chart.id)" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
-          </div>
-          <strong>Total</strong> [[ list_of_products_in_chart.reduce((currentTotal, item) => { return Number(item.price) + Number(currentTotal) }, 0) ]]
+        <div id="prodInChart" class="modal-body">
+          <table>
+                <thead>
+                    <tr>
+                        <th>Product</th><th>Price</th><th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="product_item_in_chart in list_of_products_in_chart"
+                        :key="id"
+                        class="col"
+                        style="border-bottom: 2px solid #BFC9CA; padding: 6px;">
+                        <td>
+                            [[ product_item_in_chart.product ]]
+                        </td>
+                        <td>
+                            [[ format_to_money_style(product_item_in_chart.price) ]]
+                        </td>
+                        <td>
+                            <i @click="removeProduct(product_item_in_chart.id)" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Total</strong>
+                        </td>
+                        <td>
+                            <strong>[[ format_to_money_style(list_of_products_in_chart.reduce((currentTotal, item) => { return Number(item.price) + Number(currentTotal) }, 0)) ]]</strong>
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                </tbody>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Save</button>
@@ -153,6 +180,13 @@
         },
         removeProduct: function(id){
             this.removeProductlist += id + ",";
+        },
+        format_to_money_style: function(v){
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+            return formatter.format(v);
         }
     },
     computed: {
