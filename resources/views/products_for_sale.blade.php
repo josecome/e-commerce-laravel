@@ -117,7 +117,7 @@
                             [[ format_to_money_style(product_item_in_chart.price) ]]
                         </td>
                         <td>
-                            <i @click="removeProduct(product_item_in_chart.id)" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
+                            <i @click="Product_in_chart(product_item_in_chart.id, 'r')" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
                         </td>
                     </tr>
                     <tr>
@@ -125,7 +125,7 @@
                             <strong>Total</strong>
                         </td>
                         <td>
-                            <strong>[[ format_to_money_style(list_of_products_in_chart.reduce((currentTotal, item) => { return Number(item.price) + Number(currentTotal) }, 0)) ]]</strong>
+                        <strong>[[ format_to_money_style(list_of_products_in_chart.reduce((currentTotal, item) => { return Number(item.price) + Number(currentTotal) }, 0)) ]]</strong>
                         </td>
                         <td>
 
@@ -159,7 +159,7 @@
         list_of_products: [],
         product_status: [],
         count: 0,
-        removeProductlist: ""
+        Ids_of_Products_in_Chart: []
       }
     },
     async created() {
@@ -170,16 +170,21 @@
             console.log(err)
         }
     },
+    async mounted() {
+
+    },
     methods: {
-        checkProduct: function (e, id, b){
+        checkProduct: function (e, id, b) {
             var chk = e.target.textContent;
             console.log(chk)
             this.product_status[id] = 1;
             chk === "Add to Chart" ? this.count++ : this.count--;
+            chk === "Add to Chart" ? this.Product_in_chart(id, "p") : this.Product_in_chart(id, "r")
             chk === "Add to Chart" ? this.product_status[id] = 1 : this.product_status[id] = 0;
         },
-        removeProduct: function(id){
-            this.removeProductlist += id + ",";
+        Product_in_chart: function(id, v){
+            var index = this.Ids_of_Products_in_Chart.indexOf(id)
+            v === "p" ? this.Ids_of_Products_in_Chart.push(id) : this.Ids_of_Products_in_Chart.splice(index, 1)
         },
         format_to_money_style: function(v){
             const formatter = new Intl.NumberFormat('en-US', {
@@ -187,11 +192,20 @@
                 currency: 'USD',
             });
             return formatter.format(v);
+        },
+        ServerData: async function(param) {
+            try{
+                const rs = await axios.get('/products_for_sale_list/{{ Request::segment(2) }}')
+                console.log(rs.data)
+                //this.list_of_products_in_chart = rs.data
+            } catch(err) {
+                console.log(err)
+            }
         }
     },
     computed: {
         list_of_products_in_chart() {
-            return this.list_of_products.filter((item) => {return !this.removeProductlist.includes(item.id)})
+            return this.list_of_products.filter((item) => {return this.Ids_of_Products_in_Chart.includes(item.id)})
         }
     }
   }).mount('#app')
