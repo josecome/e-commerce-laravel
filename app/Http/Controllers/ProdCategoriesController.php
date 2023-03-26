@@ -37,12 +37,24 @@ class ProdCategoriesController extends Controller
     {
         $result = "Record Successfully added!";
         $type_of_item = "products";
-        $filename = $this->saveImage($req,  $type_of_item);
-        if(strpos($filename, "Error") !== false){
-            return Redirect::to('/add_successfull?p=Error Ocurred ' . $filename);
-        }
         $userId = 1;//Auth::id();
+        $filename = $this->saveImage($req,  $type_of_item);
+        if(strpos($filename, "Error") !== false) {
+            $filename = $req->image_link;
+        }
         try{
+            $product = Product::updateOrCreate(
+                ['id' => $req->id],
+                ['product' => $req->product, 'description' => $req->description, 'price' => $req->price,
+                 'image_link' => $filename, 'user_id' => $userId]
+            );
+            $result = $product->wasChanged() ? "updated" : "not updated";
+        } catch(Exception $e) {
+            $result = 'Error ocurred: ' . $e->getMessage();
+        }
+        return Redirect::to('/product/{$category}?p='. $result);
+
+        /*try{
             $prod = new Product;
             $prod->product = $req->product;
             $prod->description = $req->description;
@@ -54,10 +66,14 @@ class ProdCategoriesController extends Controller
         } catch(Exception $e) {
             $result = 'Error ocurred: ' . $e->getMessage();
         }
-        return Redirect::to('/product/{$category}?p='. $result);
+        return Redirect::to('/product/{$category}?p='. $result);*/
     }
-    function addNewProductForm(){
-        return view('/product_form');
+    function addNewProductForm(Request $req){
+        $data = null;
+        if($req->filled('t') && $req->filled('id')){
+            $data = DB::table('products')->select('*')->where('id', $req->id)->first();
+        }
+        return view('/product_form', ['prod'=>$data]);
     }
 
     function addNewCategory(Request $req)
@@ -101,8 +117,12 @@ class ProdCategoriesController extends Controller
     function saveImage(Request $req, $type_of_item){
         $result = "saved";
         try {
-            $img = $req->file('image');
-            $filename = $img->getClientOriginalName();
+            $filename = null;
+            if(null !== $req->input('image')){
+               $filename = $req->file('image')->getClientOriginalName();
+            } else {
+                return 'Error ocurred';
+            }
             //$path = $req->file('image')->store('public/images/prod_categories');
             $path = $req->file('image')->storeAs('public/images/' . $type_of_item, $filename); //By give 'public/images/' image will be saved in 'storage/app/public/images/'
             //Having link in public folder, this image will be available to be accessed through link.

@@ -34,9 +34,9 @@
         <td>{{ $rw->user_id }}</td>
         <td><img src="{{ asset( '/storage/images/products/' . $rw->image_link) }}" style="width: 60px; height: 40px;" /></td>
         <td>
-            <form action="/edit/" style="float: left; padding-right: 4px;">
-                <button type="submit" class="btn btn-primary">Edit</button>
-            </form>
+            <a href="/product_form?t=edit&id={{ $rw->id }}" style="float: left; padding-right: 4px;">
+                <button type="button" class="btn btn-primary">Edit</button>
+            </a>
             <form action="/delete/">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
