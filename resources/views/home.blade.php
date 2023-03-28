@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
     <style>
       .bd-placeholder-img {
@@ -67,7 +68,14 @@
         -webkit-overflow-scrolling: touch;
       }
     </style>
-
+<script>
+    function setDataInForm(ctgry, descrip) {
+        var txtCategory = document.getElementById("category");
+        var txtDescription = document.getElementById("description");
+        txtCategory.value = ctgry;
+        txtDescription.value = descrip;
+    }
+</script>
 
   </head>
   <body>
@@ -151,7 +159,9 @@
               <p class="card-text">{{$row->description}}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                <a href="{{ URL('/product/'.$row->category)}}" style='font-size: 11px; text-decoration: none;'>Manage</a>
+                <i class="bi bi-pencil-square" style="padding-right: 16px;" data-toggle="modal" data-target="#exampleModal"
+                    onclick="setDataInForm('{{$row->category}}', '{{$row->description}}')"  title="Update Category Information"></i>
+                <a href="{{ URL('/product/'.$row->category)}}" class="bi bi-gear" style="color: gray" title="Manage the list of Products"></a>
                   <!--<button type="button" class="btn btn-sm btn-outline-secondary">kk</button>
                   <button type="button" class="btn btn-sm btn-outline-secondary">qq</button>-->
                 </div>
@@ -162,7 +172,7 @@
         </div>
 @endforeach
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="setDataInForm('', '')">
 Add New Category
 </button>
 </div>
@@ -200,7 +210,7 @@ Add New Category
   <div class="mb-3">
     <label class="form-label">Description:</label>
     <div class="">
-        <input type="text" name="description" id="id_name" required maxlength="100" value="" />
+        <input type="text" name="description" id="description" required maxlength="100" value="" />
     </div>
   </div>
   <div class="mb-3">
