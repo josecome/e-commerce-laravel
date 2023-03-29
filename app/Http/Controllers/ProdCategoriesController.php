@@ -39,34 +39,35 @@ class ProdCategoriesController extends Controller
         $type_of_item = "products";
         $userId = 1;//Auth::id();
         $filename = $this->saveImage($req,  $type_of_item);
-        if(strpos($filename, "Error") !== false) {
+        if($filename === "No file") {
             $filename = $req->image_link;
         }
-        try{
-            $product = Product::updateOrCreate(
-                ['id' => $req->id],
-                ['product' => $req->product, 'description' => $req->description, 'price' => $req->price,
-                 'image_link' => $filename, 'user_id' => $userId]
-            );
-            $result = $product->wasChanged() ? "updated" : "not updated";
-        } catch(Exception $e) {
-            $result = 'Error ocurred: ' . $e->getMessage();
+        if(!$req->filled('id') && strpos($filename, "Error") === false) {//Mean that it is new record
+            try{
+                $prod = new Product;
+                $prod->product = $req->product;
+                $prod->description = $req->description;
+                $prod->category = $req->category;
+                $prod->price = $req->price;
+                $prod->image_link = $filename;
+                $prod->user_id = $userId;
+                $prod->save();
+            } catch(Exception $e) {
+                $result = 'Error ocurred: ' . $e->getMessage();
+            }
+        } else {//Record exist in data base
+            try{
+                $product = Product::updateOrCreate(
+                    ['id' => $req->id],
+                    ['product' => $req->product, 'description' => $req->description, 'price' => $req->price,
+                    'image_link' => $filename, 'user_id' => $userId]
+                );
+                $result = $product->wasChanged() ? "updated" : "not updated";
+            } catch(Exception $e) {
+                $result = 'Error ocurred: ' . $e->getMessage();
+            }
         }
         return Redirect::to('/product/{$category}?p='. $result);
-
-        /*try{
-            $prod = new Product;
-            $prod->product = $req->product;
-            $prod->description = $req->description;
-            $prod->category = $req->category;
-            $prod->price = $req->price;
-            $prod->image_link = $filename;
-            $prod->user_id = $userId;
-            $prod->save();
-        } catch(Exception $e) {
-            $result = 'Error ocurred: ' . $e->getMessage();
-        }
-        return Redirect::to('/product/{$category}?p='. $result);*/
     }
     function addNewProductForm(Request $req){
         $data = null;
@@ -96,38 +97,37 @@ class ProdCategoriesController extends Controller
             //return 'Not Authorized';
         }*/
         $type_of_item = "prod_categories";
-        $filename = $this->saveImage($req, $type_of_item);
-        if(strpos($filename, "Error") !== false){
-            return Redirect::to('/add_successfull?p=Error Ocurred');
+        $userId = 1;//Auth::id();
+        $filename = $this->saveImage($req,  $type_of_item);
+        if($filename == "No file") {
+            $filename = $req->image_link;
         }
-
-        try {
-            $ctgy = new ProdCategories;
-            $ctgy->category = $req->category;
-            $ctgy->description = $req->description;
-            $ctgy->image_link = $filename;
-            $ctgy->user_id = $userId;
-            $ctgy->save();
+        try{
+            $category_product = ProdCategories::updateOrCreate(
+                ['id' => $req->id],
+                ['category' => $req->category, 'description' => $req->description,
+                 'image_link' => $filename, 'user_id' => $userId]
+            );
+            $result = $category_product->wasChanged() ? "updated" : "not updated";
         } catch(Exception $e) {
             $result = 'Error ocurred: ' . $e->getMessage();
         }
+        //return $req->input('description') . "," . $req->file('image')->getClientOriginalName();
         return Redirect::to('/add_successfull?p=' . $result);
-
     }
     function saveImage(Request $req, $type_of_item){
         $result = "saved";
         try {
-            $filename = null;
-            if(null !== $req->input('image')){
-               $filename = $req->file('image')->getClientOriginalName();
-            } else {
-                return 'Error ocurred';
+            if (!$req->hasFile('image')) {
+                return "No file";
             }
+            $filename = $req->file('image')->getClientOriginalName();
             //$path = $req->file('image')->store('public/images/prod_categories');
             $path = $req->file('image')->storeAs('public/images/' . $type_of_item, $filename); //By give 'public/images/' image will be saved in 'storage/app/public/images/'
             //Having link in public folder, this image will be available to be accessed through link.
             return $filename;
         } catch(Exception $e) {
+            echo $e->getMessage();
             return 'Error ocurred: ' . $e->getMessage();
         }
     }

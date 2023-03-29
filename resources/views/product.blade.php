@@ -18,6 +18,7 @@
     <thead class="">
     <tr>
         <th>ID</th>
+        <th>Product</th>
         <th>Description</th>
         <th>Category</th>
         <th>User ID</th>
@@ -29,6 +30,7 @@
     @foreach ($prod as $rw)
     <tr>
         <td>{{ $rw->id }}</td>
+        <td>{{ $rw->product }}</td>
         <td>{{ $rw->description }}</td>
         <td>{{ $rw->category }}</td>
         <td>{{ $rw->user_id }}</td>

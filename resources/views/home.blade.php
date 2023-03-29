@@ -69,11 +69,15 @@
       }
     </style>
 <script>
-    function setDataInForm(ctgry, descrip) {
+    function setDataInForm(ctgry, descrip, image_link, txt_id) {
+        var txtId = document.getElementById("txtid");
         var txtCategory = document.getElementById("category");
         var txtDescription = document.getElementById("description");
+        var txtImageLink = document.getElementById("image_link");
         txtCategory.value = ctgry;
         txtDescription.value = descrip;
+        txtImageLink.value = image_link;
+        txtId.value = txt_id;
     }
 </script>
 
@@ -160,7 +164,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                 <i class="bi bi-pencil-square" style="padding-right: 16px;" data-toggle="modal" data-target="#exampleModal"
-                    onclick="setDataInForm('{{$row->category}}', '{{$row->description}}')"  title="Update Category Information"></i>
+                    onclick="setDataInForm('{{$row->category}}', '{{$row->description}}', '{{$row->image_link}}', '{{$row->id}}')"  title="Update Category Information"></i>
                 <a href="{{ URL('/product/'.$row->category)}}" class="bi bi-gear" style="color: gray" title="Manage the list of Products"></a>
                   <!--<button type="button" class="btn btn-sm btn-outline-secondary">kk</button>
                   <button type="button" class="btn btn-sm btn-outline-secondary">qq</button>-->
@@ -172,7 +176,7 @@
         </div>
 @endforeach
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="setDataInForm('', '')">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="setDataInForm('', '', '', '')">
 Add New Category
 </button>
 </div>
@@ -201,6 +205,12 @@ Add New Category
     <h3>Details</h3>
     </div>
   </div>
+  <div class="mb-3">
+    <label class="form-label">Id:</label>
+    <div class="">
+        <input type="text" name="id" id="txtid" value=""/>
+    </div>
+  </div>
     <div class="mb-3">
     <label class="form-label">Category:</label>
     <div class="">
@@ -216,6 +226,7 @@ Add New Category
   <div class="mb-3">
     <label class="form-label">Image Upload:</label>
     <div class="">
+        <input type="hidden" name="image_link" id="image_link" value="" />
         <input type="file" name="image" id="id_file" />
     </div>
   </div>
