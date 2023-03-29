@@ -42,7 +42,7 @@ class ProdCategoriesController extends Controller
         if($filename === "No file") {
             $filename = $req->image_link;
         }
-        if(!$req->filled('id') && strpos($filename, "Error") === false) {//Mean that it is new record
+        if(!$req->filled('id')) {//Mean that it is new record
             try{
                 $prod = new Product;
                 $prod->product = $req->product;
@@ -99,20 +99,32 @@ class ProdCategoriesController extends Controller
         $type_of_item = "prod_categories";
         $userId = 1;//Auth::id();
         $filename = $this->saveImage($req,  $type_of_item);
-        if($filename == "No file") {
+        if($filename === "No file") {
             $filename = $req->image_link;
         }
-        try{
-            $category_product = ProdCategories::updateOrCreate(
-                ['id' => $req->id],
-                ['category' => $req->category, 'description' => $req->description,
-                 'image_link' => $filename, 'user_id' => $userId]
-            );
+        if(!$req->filled('id')) {
+            try{
+                $ctgry = new ProdCategories;
+                $ctgry->category = $req->category;
+                $ctgry->description = $req->description;
+                $ctgry->image_link = $filename;
+                $ctgry->user_id = $userId;
+                $ctgry->save();
+            } catch(Exception $e) {
+                $result = 'Error ocurred: ' . $e->getMessage();
+            }
+        } else {
+            try{
+                $category_product = ProdCategories::updateOrCreate(
+                   ['id' => $req->id],
+                   ['category' => $req->category, 'description' => $req->description,
+                    'image_link' => $filename, 'user_id' => $userId]
+                );
             $result = $category_product->wasChanged() ? "updated" : "not updated";
         } catch(Exception $e) {
             $result = 'Error ocurred: ' . $e->getMessage();
         }
-        //return $req->input('description') . "," . $req->file('image')->getClientOriginalName();
+        }
         return Redirect::to('/add_successfull?p=' . $result);
     }
     function saveImage(Request $req, $type_of_item){

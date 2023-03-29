@@ -74,10 +74,12 @@
         var txtCategory = document.getElementById("category");
         var txtDescription = document.getElementById("description");
         var txtImageLink = document.getElementById("image_link");
+        var tid = document.getElementById("tid");
         txtCategory.value = ctgry;
         txtDescription.value = descrip;
         txtImageLink.value = image_link;
         txtId.value = txt_id;
+        tid.innerHTML = txt_id;
     }
 </script>
 
@@ -208,7 +210,7 @@ Add New Category
   <div class="mb-3">
     <label class="form-label">Id:</label>
     <div class="">
-        <input type="text" name="id" id="txtid" value=""/>
+        <span id="tid"></span><input type="text" name="id" id="txtid" value="" style="display: none;"/>
     </div>
   </div>
     <div class="mb-3">
