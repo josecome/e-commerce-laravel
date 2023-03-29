@@ -80,22 +80,14 @@ class ProdCategoriesController extends Controller
     function addNewCategory(Request $req)
     {
         $result = "Record Successfully added!";
-        $response = Gate::inspect('addupdate_ctgry');
 
-        if (! $response->allowed()) {
-            //return $response->message() . " <a href='/'>Return</a>";
-        }
         if (! Gate::allows('addupdate_ctgry')) {
             //abort(403);
         }
 
         $userId = 1;// Auth::id();
         //$user = Auth::user();
-        /*if ($user->can('create', ProdCategories::class)) {
-            //echo 'Current logged in user is allowed to create new articles.';
-        } else {
-            //return 'Not Authorized';
-        }*/
+
         $type_of_item = "prod_categories";
         $userId = 1;//Auth::id();
         $filename = $this->saveImage($req,  $type_of_item);
