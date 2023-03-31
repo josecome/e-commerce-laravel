@@ -16,13 +16,13 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[ProdCategoriesController::class,'getProdCategories']);
-Route::get('/product/{category}',[ProdCategoriesController::class, 'getProducts'])->name('product');
-Route::get('/product_form',[ProdCategoriesController::class, 'addNewProductForm'])->name('product_form');
-Route::post('/add_product',[ProdCategoriesController::class, 'addNewProduct']);
-Route::post('/add_category',[ProdCategoriesController::class, 'addNewCategory'])->name('add_category');
-Route::get('/products_for_sale/{category}',[ProdCategoriesController::class, 'ProductsForSale'])->name('products_for_sale');
-Route::get('/products_for_sale_list/{category}',[ProdCategoriesController::class, 'ProductsForSaleList'])->name('products_for_sale_list');
+Route::get('/',[CategoryController::class,'getCategories']);
+Route::get('/product/{category}',[ProductController::class, 'getProducts'])->name('product');
+Route::get('/product_form',[ProductController::class, 'addNewProductForm'])->name('product_form');
+Route::post('/add_product',[ProductController::class, 'addNewProduct']);
+Route::post('/add_category',[CategoryController::class, 'addNewCategory'])->name('add_category');
+Route::get('/products_for_sale/{category}',[ProductController::class, 'ProductsForSale'])->name('products_for_sale');
+Route::get('/products_for_sale_list/{category}',[ProductController::class, 'ProductsForSaleList'])->name('products_for_sale_list');
 Route::get('/add_successfull', function () {
     return view('add_successfull');
 });
