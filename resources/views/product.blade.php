@@ -10,15 +10,15 @@
 </head>
 <body>
 
-    <form action="/product_form" style="float: left; padding-right: 4px;">
-        <input type="hidden" name="pg" value="{{ Request::segment(2) }}" />
-        <button type="submit" class="btn btn-link">Add new</button>
-    </form>
+    <a href="/product_form?pg={{ Request::segment(2) }}" style="float: left; padding-right: 4px;">
+        <button type="button" class="btn btn-link">Add new</button>
+    </a>
     <table class="table table-striped">
     <thead class="">
     <tr>
         <th>ID</th>
         <th>Product</th>
+        <th>Price</th>
         <th>Description</th>
         <th>Category</th>
         <th>User ID</th>
@@ -31,12 +31,13 @@
     <tr>
         <td>{{ $rw->id }}</td>
         <td>{{ $rw->product }}</td>
+        <td>{{ $rw->price }}</td>
         <td>{{ $rw->description }}</td>
         <td>{{ $rw->category }}</td>
         <td>{{ $rw->user_id }}</td>
         <td><img src="{{ asset( '/storage/images/products/' . $rw->image_link) }}" style="width: 60px; height: 40px;" /></td>
         <td>
-            <a href="/product_form?t=edit&id={{ $rw->id }}" style="float: left; padding-right: 4px;">
+            <a href="/product_form?t=edit&id={{ $rw->id }}&pg={{ Request::segment(2) }}" style="float: left; padding-right: 4px;">
                 <button type="button" class="btn btn-primary">Edit</button>
             </a>
             <form action="/delete/">

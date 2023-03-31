@@ -65,7 +65,7 @@ class ProductController extends Controller
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
         }
-        return Redirect::to('/product/{$category}?p='. $result);
+        return Redirect::to('/product/' . $req->category . '?p='. $result);
     }
     function addNewProductForm(Request $req){
         $data = null;
