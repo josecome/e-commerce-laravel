@@ -18,12 +18,18 @@ use Illuminate\Http\Request;
 |
 */
 Route::get('/',[CategoryController::class,'getCategories']);
-Route::get('/product/{category}',[ProductController::class, 'getProducts'])->name('product');
-Route::get('/product_form',[ProductController::class, 'addNewProductForm'])->name('product_form');
-Route::post('/add_product',[ProductController::class, 'addNewProduct']);
-Route::post('/add_category',[CategoryController::class, 'addNewCategory'])->name('add_category');
-Route::get('/products_for_sale/{category}',[ProductController::class, 'ProductsForSale'])->name('products_for_sale');
-Route::get('/products_for_sale_list/{category}',[ProductController::class, 'ProductsForSaleList'])->name('products_for_sale_list');
+Route::get('/product/{category}',[ProductController::class, 'getProducts']
+)->middleware('auth')->name('product');
+Route::get('/product_form',[ProductController::class, 'addNewProductForm']
+)->middleware('auth')->name('product_form');
+Route::post('/add_product',[ProductController::class, 'addNewProduct']
+)->middleware('auth')->name('add_product');
+Route::post('/add_category',[CategoryController::class, 'addNewCategory']
+)->middleware('auth')->name('add_category');
+Route::get('/products_for_sale/{category}',[ProductController::class, 'ProductsForSale']
+)->name('products_for_sale');
+Route::get('/products_for_sale_list/{category}',[ProductController::class, 'ProductsForSaleList']
+)->name('products_for_sale_list');
 Route::get('/add_successfull', function () {
     return view('add_successfull');
 });

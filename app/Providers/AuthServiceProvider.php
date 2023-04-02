@@ -30,15 +30,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        function isSuperAdmin(){
-           return TRUE; //Will be updated
-        }
-        Gate::define('addupdate_ctgry', function () {
-            //return isSuperAdmin();
-            return isSuperAdmin()
-            ? Response::allow()
-            : Response::deny('You must be an administrator!');
+        Gate::define('isAdmin', function ($user) {
+            return $user->role === "admin";
         });
 
+        Gate::define('isManager', function ($user) {
+            return $user->role === "manager";
+        });
+
+        Gate::define('isSeller', function ($user) {
+            return $user->role === "seller";
+        });
+
+        Gate::define('isUser', function ($user) {
+            return $user->role === "user";
+        });
     }
 }

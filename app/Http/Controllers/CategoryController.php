@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -24,12 +25,11 @@ class CategoryController extends Controller
     function addNewCategory(Request $req)
     {
         $result = "Record Successfully added!";
-
-        if (! Gate::allows('addupdate_ctgry')) {
-            //abort(403);
+        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+            abort(403);
         }
 
-        $userId = 1;// Auth::id();
+        $userId = Auth::id();
         //$user = Auth::user();
 
         $type_of_item = "prod_categories";

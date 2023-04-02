@@ -33,6 +33,9 @@ class ProductController extends Controller
     }
     function addNewProduct(Request $req)
     {
+        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+            abort(403);
+        }
         $result = "Record Successfully added!";
         $type_of_item = "products";
         $userId = 1;//Auth::id();
@@ -68,6 +71,9 @@ class ProductController extends Controller
         return Redirect::to('/product/' . $req->category . '?p='. $result);
     }
     function addNewProductForm(Request $req){
+        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+            abort(403);
+        }
         $data = null;
         if($req->filled('t') && $req->filled('id')){
             $data = DB::table('products')->select('*')->where('id', $req->id)->first();
