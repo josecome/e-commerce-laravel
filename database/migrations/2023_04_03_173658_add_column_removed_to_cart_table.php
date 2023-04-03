@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('prod_categories', function (Blueprint $table) {
-            $table->String('catname');
+        Schema::table('cart', function (Blueprint $table) {
+            $table->integer('removed')->nullable()->after('description')->default(0);
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('prod_categories', function (Blueprint $table) {
-            $table->dropColumn('catname');
+        Schema::table('cart', function (Blueprint $table) {
+            $table->dropColumn('removed');
         });
     }
 };

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('cat_products', function (Blueprint $table) {
-            $table->String('catname');
+        Schema::table('cart', function (Blueprint $table) {
+            $table->integer('qnty')->nullable()->after('product');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('cat_products', function (Blueprint $table) {
-            //
+        Schema::table('cart', function (Blueprint $table) {
+            $table->dropColumn('qnty');
         });
     }
 };
