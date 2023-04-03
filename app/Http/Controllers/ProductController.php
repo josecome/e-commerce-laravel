@@ -38,7 +38,7 @@ class ProductController extends Controller
         }
         $result = "Record Successfully added!";
         $type_of_item = "products";
-        $userId = 1;//Auth::id();
+        $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
         if($filename === "No file") {
             $filename = $req->image_link;
