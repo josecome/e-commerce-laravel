@@ -13,6 +13,7 @@ class CartController extends Controller
     function getProductsInCart($user)
     {
         $data = DB::table('cart')->select('*')->where('removed', 0)->get();
+        //$data = DB::table('cart')->select('*')->where([['removed', '=', 0], ['removed', '=', 0]])->get();
         return json_decode($data);
     }
     function addNewProductInCart(Request $req)
@@ -20,15 +21,15 @@ class CartController extends Controller
         $userId = Auth::id();
         $totalprice = 0;
         try{
-            $prod = new Cart;
-            $prod->product = $req->product;
-            $prod->qnty = $req->qnty;
-            $prod->description = $req->description;
-            $prod->category = $req->category;
-            $prod->price = $req->price;
-            $prod->totalprice = $totalprice;
-            $prod->user_id = $userId;
-            $prod->save();
+            $cart = new Cart;
+            $cart->product = $req->product;
+            $cart->qnty = $req->qnty;
+            $cart->description = $req->description;
+            $cart->category = $req->category;
+            $cart->price = $req->price;
+            $cart->totalprice = $totalprice;
+            $cart->user_id = $userId;
+            $cart->save();
         } catch(Exception $e) {
             $result = 'Error ocurred: ' . $e->getMessage();
         }
@@ -47,7 +48,7 @@ class CartController extends Controller
             return 'Error ocurred';
         }
         $cart->save();
-            return 'Updated';
+            return 'updated';
     }
     function waitPayment(Cart $cart)
     {
@@ -62,7 +63,7 @@ class CartController extends Controller
             return 'Error ocurred';
         }
         $cart->save();
-            return 'Updated';
+            return 'updated';
     }
     function Paid(Cart $cart)
     {
@@ -77,6 +78,6 @@ class CartController extends Controller
             return 'Error ocurred';
         }
         $cart->save();
-            return 'Updated';
+            return 'updated';
     }
 }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Models\ProdCategories;
+use App\Models\Cart;
 use App\Policies\ProdCategoriesPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\Response;
@@ -44,6 +45,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('isUser', function ($user) {
             return $user->role === "user";
+        });
+
+        Gate::define('belongToUser', function ($user, Cart $cart) {
+            return $user->id === $cart->user_id;
         });
     }
 }

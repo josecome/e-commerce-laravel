@@ -30,12 +30,19 @@ Route::get('/products_for_sale/{category}',[ProductController::class, 'ProductsF
 )->name('products_for_sale');
 Route::get('/products_for_sale_list/{category}',[ProductController::class, 'ProductsForSaleList']
 )->name('products_for_sale_list');
-Route::put('cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
-Route::put('waitpayment/{cartid}', [CartController::class, 'waitPayment'])->name('waitpayment');
-Route::put('payment/{cartid}', [CartController::class, 'Paid'])->name('payment');
+
+Route::middleware('can:belongToUser')->group(function () {
+    Route::put('productincart/{userid}', [CartController::class, 'getProductsInCart']
+    )->middleware('auth')->name('productincart');
+    Route::put('cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
+    Route::put('waitpayment/{cartid}', [CartController::class, 'waitPayment'])->name('waitpayment');
+    Route::put('payment/{cartid}', [CartController::class, 'Paid'])->name('payment');
+});
+
 Route::get('/add_successfull', function () {
     return view('add_successfull');
 });
+
 
 Route::get('/logout',[Controllers::class,'logout']);
 
