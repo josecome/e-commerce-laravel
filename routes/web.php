@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Controllers;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[CategoryController::class,'getCategories']);
+Route::get('/',[CategoryController::class,'getCategories'])->name('home');
 Route::get('/product/{category}',[ProductController::class, 'getProducts']
 )->middleware('auth')->name('product');
 Route::get('/product_form',[ProductController::class, 'addNewProductForm']
@@ -31,9 +32,13 @@ Route::get('/products_for_sale/{category}',[ProductController::class, 'ProductsF
 Route::get('/products_for_sale_list/{category}',[ProductController::class, 'ProductsForSaleList']
 )->name('products_for_sale_list');
 
-Route::middleware('can:belongToUser')->group(function () {
-    Route::put('productincart/{userid}', [CartController::class, 'getProductsInCart']
-    )->middleware('auth')->name('productincart');
+Route::post('/add_product_in_cart', [CartController::class, 'addNewProductInCart']
+)->middleware('auth')->name('add_product_in_cart');
+
+Route::get('productincart/{userid}', [CartController::class, 'getProductsInCart']
+)->middleware('auth')->name('productincart');
+
+Route::middleware('auth')->group(function () {
     Route::put('cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
     Route::put('waitpayment/{cartid}', [CartController::class, 'waitPayment'])->name('waitpayment');
     Route::put('payment/{cartid}', [CartController::class, 'Paid'])->name('payment');
@@ -42,7 +47,6 @@ Route::middleware('can:belongToUser')->group(function () {
 Route::get('/add_successfull', function () {
     return view('add_successfull');
 });
-
 
 Route::get('/logout',[Controllers::class,'logout']);
 

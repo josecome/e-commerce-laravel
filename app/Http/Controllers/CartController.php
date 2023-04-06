@@ -10,10 +10,13 @@ use Exception;
 
 class CartController extends Controller
 {
-    function getProductsInCart($user)
+    function getProductsInCart()
     {
-        $data = DB::table('cart')->select('*')->where('removed', 0)->get();
-        //$data = DB::table('cart')->select('*')->where([['removed', '=', 0], ['removed', '=', 0]])->get();
+        $userId = Auth::id();
+        //$data = DB::table('cart')->select('*')->where('removed', 0)->get();
+        $data = DB::table('cart')->select('*')->where(
+                [['user_id', '=', $userId], ['removed', '=', 0]]
+            )->get();
         return json_decode($data);
     }
     function addNewProductInCart(Request $req)
@@ -31,8 +34,9 @@ class CartController extends Controller
             $cart->user_id = $userId;
             $cart->save();
         } catch(Exception $e) {
-            $result = 'Error ocurred: ' . $e->getMessage();
+            return 'Error ocurred: ' . $e->getMessage();
         }
+        return 'updated';
     }
     function cartUpdate(Request $req, Cart $cart)
     {
@@ -44,11 +48,11 @@ class CartController extends Controller
                     'updated_at' => $req->updated_at
                 ],
             );
+            $cart->save();
         } catch(Exception $e) {
             return 'Error ocurred';
         }
-        $cart->save();
-            return 'updated';
+        return 'updated';
     }
     function waitPayment(Cart $cart)
     {
@@ -59,11 +63,11 @@ class CartController extends Controller
                     'pymnt_status_date' => now()
                 ],
             );
+            $cart->save();
         } catch(Exception $e) {
             return 'Error ocurred';
         }
-        $cart->save();
-            return 'updated';
+        return 'updated';
     }
     function Paid(Cart $cart)
     {
@@ -74,10 +78,10 @@ class CartController extends Controller
                     'pymnt_status_date' => now()
                 ],
             );
+            $cart->save();
         } catch(Exception $e) {
             return 'Error ocurred';
         }
-        $cart->save();
-            return 'updated';
+        return 'updated';
     }
 }

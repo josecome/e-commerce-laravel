@@ -100,7 +100,7 @@
           <table>
                 <thead>
                     <tr>
-                        <th>Product</th><th>Price</th><th>Remove</th>
+                        <th>Product</th><th>Price</th><th>Qnty</th><th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,6 +113,11 @@
                         </td>
                         <td>
                             [[ format_to_money_style(product_item_in_cart.price) ]]
+                        </td>
+                        <td>
+                            <input type='number'
+                                style='width: 60px'
+                                v-model = "Qnty_of_Products_in_Cart[Ids_of_Products_in_Cart.indexOf(product_item_in_cart.id)]" />
                         </td>
                         <td>
                             <i @click="Product_in_cart(product_item_in_cart.id, 'r')" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
@@ -170,7 +175,12 @@
         }
     },
     async mounted() {
-      //this.Product_in_cart;
+        const rs = await axios.get('/productincart/{{ Auth::id() }}') //get data
+        rs_response = rs.data;
+        console.log(rs_response)
+        this.Ids_of_Products_in_Cart = rs_response.map((id_column) => { return id_column.id })
+        this.Qnty_of_Products_in_Cart = rs_response.map((qnty_column) => { return qnty_column.qnty })
+        this.count = this.Ids_of_Products_in_Cart.length
     },
     methods: {
         checkProduct: function (e, id, b) {
@@ -182,30 +192,37 @@
             chk === "Add to Cart" ? this.product_status[id] = 1 : this.product_status[id] = 0;
         },
         Product_in_cart:  async function(id, v){
+            alert(id, v)
             var rs_response = "";
             var is_list_of_cart_products = "no";
-            try{
-                if(v === "p"){
-                    const rs = await axios.put('') //put data
-                    rs_response = rs.data;
-                } else if(v === "r"){
+            if(v === "p"){
+                await axios.post('/add_product_in_cart', {//put data
+                    product: 'Test2',
+                    qnty: 4,
+                    price: 300,
+                    totalprice: 1200,
+                    description: '60x60',
+                    category: 'TV'
+                })
+                .then((response) => {
+                    rs_response = response.data
+                    console.log(rs_response)
+                }, (error) => {
+                    rs_response = error;
+                });
+            }/* else if(v === "r"){
                     const rs = await axios.put('') //delete data (soft delete is perfomed by use colum to invalidade record)
                     rs_response = rs.data;
-                } else {
-                    const rs = await axios.get('') //get data
-                    rs_response = rs.data;
-                    is_list_of_cart_products = "yes";
-                }
-            } catch(err) {
-                rs_response = err;
+            }*/ else {
+                const rs = await axios.get('/productincart/{{ Auth::id() }}') //get data
+                rs_response = rs.data;
+                console.log(rs_response)
+                is_list_of_cart_products = "yes";
             }
 
             if(rs_response === "updated") {
                 var index = this.Ids_of_Products_in_Cart.indexOf(id)
                 v === "p" ? this.Ids_of_Products_in_Cart.push(id) : this.Ids_of_Products_in_Cart.splice(index, 1)
-            } else if(is_list_of_cart_products === "yes") {
-                this.Ids_of_Products_in_Cart = rs.rs_response[id]
-                this.Qnty_of_Products_in_Cart = rs.rs_response[qnty]
             }
         },
         format_to_money_style: function(v){
