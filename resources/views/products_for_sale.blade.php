@@ -47,6 +47,22 @@
     </style>
 </head>
 <body>
+<div style="width: 100%">
+@if (Route::has('login'))
+        <div style="position: absolute; top: 2px; right: 0px; margin-right: 8px;">
+            @auth
+                <span style="color: gray; padding-right: 10px;">User: {{ auth()->user()->name }}</span>
+                <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+            @else
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline" style="text-decoration: none">Log in</a>
+
+                @if (Route::has('register'))
+                    <span style="color: white">/</span> <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline" style="text-decoration: none">Register</a>
+                @endif
+            @endauth
+        </div>
+   @endif
+</div>
 <div class="album py-5 bg-light">
     <div class="container">
         <div id="app" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -74,7 +90,7 @@
                   <button type="button"  @click="checkProduct($event, product_item.id, product_item.product)"
                         class="btn btn-sm btn-outline-secondary"
                         style="color: white;"
-                        :class="[ product_status[product_item.id] === 1 ? 'addToChrt' : 'rmvToChrt' ]"
+                        :class="product_status[product_item.id] === 1 ? 'addToChrt' : 'rmvToChrt'"
                     >
                         [[ product_status[product_item.id] !== null && product_status[product_item.id] === 1 ? 'Remove from Cart' : 'Add to Cart' ]]
                    </button>
@@ -117,7 +133,9 @@
                         <td>
                             <input type='number'
                                 style='width: 60px'
-                                v-model = "Qnty_of_Products_in_Cart[Ids_of_Products_in_Cart.indexOf(product_item_in_cart.id)]" />
+                                v-model = "Qnty_of_Products_in_Cart[Ids_of_Products_in_Cart.indexOf(product_item_in_cart.id)]"
+                                v-on:change="ChangeProductQnty(product_item_in_cart.id)"
+                            />
                         </td>
                         <td>
                             <i @click="Product_in_cart(product_item_in_cart.id, 'r')" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
@@ -138,7 +156,8 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" :class="purchase_status === 'Purchase' ? 'btn btn-success' : 'btn btn-danger'"
+              @click="MarkAsPurchased" >[[ purchase_status ]]</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -163,7 +182,8 @@
         product_status: [],
         count: 0,
         Ids_of_Products_in_Cart: [],
-        Qnty_of_Products_in_Cart: []
+        Qnty_of_Products_in_Cart: [],
+        purchase_status: 'Purchase'
       }
     },
     async created() {
@@ -191,7 +211,7 @@
             chk === "Add to Cart" ? this.Product_in_cart(id, "p") : this.Product_in_cart(id, "r") //p -> put in Cart and r -> remove from cart
             chk === "Add to Cart" ? this.product_status[id] = 1 : this.product_status[id] = 0;
         },
-        Product_in_cart:  async function(id, v){
+        Product_in_cart:  async function(id, v) {
             alert(id, v)
             var rs_response = "";
             var is_list_of_cart_products = "no";
@@ -210,9 +230,7 @@
                     rs_response = error;
                 });
             } else if(v === "r") {
-                const rs = await axios.delete('/delete_item_in_cart',
-                    { data: { id: id }
-                })
+                await axios.delete(`/delete_item_in_cart/${ id }`)
                 .then((response) => {
                     rs_response = response.data
 
@@ -227,21 +245,36 @@
                 v === "p" ? this.Ids_of_Products_in_Cart.push(id) : this.Ids_of_Products_in_Cart.splice(index, 1)
             }
         },
+        ChangeProductQnty: async function( id ) {
+            await axios.patch(`/cartupdate/${ id }`, {
+                qnty: this.Qnty_of_Products_in_Cart[this.Ids_of_Products_in_Cart.indexOf(id)]
+            })
+            .then((response) => {
+                rs_response = response.data
+            }, (error) => {
+                rs_response = error;
+            });
+            console.log(rs_response)
+        },
+        MarkAsPurchased: async function() {
+            console.log('ids: ' + this.Ids_of_Products_in_Cart.toString())
+            await axios.patch('/payment', {
+                ids: this.Ids_of_Products_in_Cart.toString()
+            })
+            .then((response) => {
+                rs_response = response.data
+                this.purchase_status = 'Purchased'
+            }, (error) => {
+                rs_response = error;
+            });
+            console.log(rs_response)
+        },
         format_to_money_style: function(v){
             const formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
             });
             return formatter.format(v);
-        },
-        ServerData: async function(param) {
-            try{
-                const rs = await axios.get('/products_for_sale_list/{{ Request::segment(2) }}')
-                console.log(rs.data)
-                //this.list_of_products_in_cart = rs.data
-            } catch(err) {
-                console.log(err)
-            }
         }
     },
     computed: {

@@ -39,10 +39,10 @@ Route::get('/productincart/{userid}', [CartController::class, 'getProductsInCart
 )->middleware('auth')->name('productincart');
 
 Route::middleware('auth')->group(function () {
-    Route::put('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
-    Route::delete('/delete_item_in_cart', [CartController::class, 'deleteItemInCart']
+    Route::patch('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
+    Route::delete('/delete_item_in_cart/{id}', [CartController::class, 'deleteItemInCart']
     )->name('delete_item_in_cart');
-    Route::put('/payment/{cartid}', [CartController::class, 'Paid'])->name('payment');
+    Route::patch('/payment', [CartController::class, 'Paid'])->name('payment');
 });
 
 Route::get('/add_successfull', function () {

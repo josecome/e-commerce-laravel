@@ -33,7 +33,7 @@ class CategoryController extends Controller
         //$user = Auth::user();
 
         $type_of_item = "prod_categories";
-        $userId = 1;//Auth::id();
+        $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
         if($filename === "No file") {
             $filename = $req->image_link;
