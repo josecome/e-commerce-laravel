@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use App\Models\Cart;
 use Exception;
 
@@ -13,9 +14,9 @@ class CartController extends Controller
     function getProductsInCart()
     {
         $userId = Auth::id();
-        //$data = DB::table('cart')->select('*')->where('removed', 0)->get();
+        //$data = DB::table('cart')->select('*')->where('purchased', 0)->get();
         $data = DB::table('cart')->select('*')->where(
-                [['user_id', '=', $userId], ['removed', '=', 0]]
+                [['user_id', '=', $userId], ['purchased', '=', 0]]
             )->get();
         return json_decode($data);
     }
@@ -44,7 +45,6 @@ class CartController extends Controller
             $cart->fill(
                 [
                     'qnty' => $req->qnty,
-                    'removed' => $req->removed,
                     'updated_at' => $req->updated_at
                 ],
             );
@@ -53,6 +53,10 @@ class CartController extends Controller
             return 'Error ocurred';
         }
         return 'updated';
+    }
+    function deleteItemInCart(User $user)
+    {
+        return Cart::find($user)->delete();
     }
     function waitPayment(Cart $cart)
     {

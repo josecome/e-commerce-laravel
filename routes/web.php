@@ -35,13 +35,14 @@ Route::get('/products_for_sale_list/{category}',[ProductController::class, 'Prod
 Route::post('/add_product_in_cart', [CartController::class, 'addNewProductInCart']
 )->middleware('auth')->name('add_product_in_cart');
 
-Route::get('productincart/{userid}', [CartController::class, 'getProductsInCart']
+Route::get('/productincart/{userid}', [CartController::class, 'getProductsInCart']
 )->middleware('auth')->name('productincart');
 
 Route::middleware('auth')->group(function () {
-    Route::put('cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
-    Route::put('waitpayment/{cartid}', [CartController::class, 'waitPayment'])->name('waitpayment');
-    Route::put('payment/{cartid}', [CartController::class, 'Paid'])->name('payment');
+    Route::put('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
+    Route::delete('/delete_item_in_cart', [CartController::class, 'deleteItemInCart']
+    )->name('delete_item_in_cart');
+    Route::put('/payment/{cartid}', [CartController::class, 'Paid'])->name('payment');
 });
 
 Route::get('/add_successfull', function () {

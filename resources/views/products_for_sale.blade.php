@@ -206,18 +206,20 @@
                 })
                 .then((response) => {
                     rs_response = response.data
-                    console.log(rs_response)
                 }, (error) => {
                     rs_response = error;
                 });
-            }/* else if(v === "r"){
-                    const rs = await axios.put('') //delete data (soft delete is perfomed by use colum to invalidade record)
-                    rs_response = rs.data;
-            }*/ else {
-                const rs = await axios.get('/productincart/{{ Auth::id() }}') //get data
-                rs_response = rs.data;
+            } else if(v === "r") {
+                const rs = await axios.delete('/delete_item_in_cart',
+                    { data: { id: id }
+                })
+                .then((response) => {
+                    rs_response = response.data
+
+                }, (error) => {
+                    rs_response = error;
+                });
                 console.log(rs_response)
-                is_list_of_cart_products = "yes";
             }
 
             if(rs_response === "updated") {
