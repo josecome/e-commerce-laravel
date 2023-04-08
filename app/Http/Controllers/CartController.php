@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 use App\Models\Cart;
 use App\http\Traits\dataFromStore;
 use Exception;
@@ -21,13 +22,14 @@ class CartController extends Controller
         $userId = Auth::id();
         $totalprice = 0;
         try{
+            $prod = Product::find($req->id);
             $cart = new Cart;
-            $cart->product = $req->product;
-            $cart->qnty = $req->qnty;
-            $cart->description = $req->description;
-            $cart->category = $req->category;
-            $cart->price = $req->price;
-            $cart->totalprice = $totalprice;
+            $cart->product = $prod->product;
+            $cart->qnty = 1;
+            $cart->description = $prod->description;
+            $cart->category = $prod->category;
+            $cart->price = $prod->price;
+            $cart->totalprice = $prod->price;
             $cart->user_id = $userId;
             $cart->save();
         } catch(Exception $e) {

@@ -234,15 +234,9 @@
         Product_in_cart:  async function(id, v) {
             alert(id, v)
             var rs_response = "";
-            var is_list_of_cart_products = "no";
             if(v === "p"){
                 await axios.post('/add_product_in_cart', {//put data
-                    product: 'Test2',
-                    qnty: 4,
-                    price: 300,
-                    totalprice: 1200,
-                    description: '60x60',
-                    category: 'TV'
+                    id: id
                 })
                 .then((response) => {
                     rs_response = response.data
@@ -257,7 +251,7 @@
                 }, (error) => {
                     rs_response = error;
                 });
-                console.log(rs_response)
+                console.log('rs: ' + rs_response)
             }
 
             this.Products_in_Cart = rs_response
