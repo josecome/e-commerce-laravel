@@ -120,7 +120,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="product_item_in_cart in list_of_products_in_cart"
+                    <tr v-for="(product_item_in_cart, index) in Products_in_Cart"
                         :key="id"
                         class="col"
                         style="border-bottom: 2px solid #BFC9CA; padding: 6px;">
@@ -133,8 +133,9 @@
                         <td>
                             <input type='number'
                                 style='width: 60px'
-                                v-model = "Qnty_of_Products_in_Cart[Ids_of_Products_in_Cart.indexOf(product_item_in_cart.id)]"
-                                v-on:change="ChangeProductQnty(product_item_in_cart.id)"
+                                :disabled="purchase_status !== 'Order'"
+                                v-model = "Qnty_of_Products_in_Cart[index]"
+                                v-on:change="ChangeProductQnty(product_item_in_cart.id, index)"
                             />
                         </td>
                         <td>
@@ -156,7 +157,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="submit" :class="purchase_status === 'Purchase' ? 'btn btn-success' : 'btn btn-danger'"
+          <button type="submit" :class="purchase_status === 'Order' ? 'btn btn-success' : 'btn btn-danger'"
               @click="MarkAsPurchased" >[[ purchase_status ]]</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
@@ -183,7 +184,8 @@
         count: 0,
         Ids_of_Products_in_Cart: [],
         Qnty_of_Products_in_Cart: [],
-        purchase_status: 'Purchase'
+        Products_in_Cart: [],
+        purchase_status: 'Order'
       }
     },
     async created() {
@@ -197,10 +199,13 @@
     async mounted() {
         const rs = await axios.get('/productincart/{{ Auth::id() }}') //get data
         rs_response = rs.data;
-        console.log(rs_response)
-        this.Ids_of_Products_in_Cart = rs_response.map((id_column) => { return id_column.id })
+        this.Products_in_Cart = rs_response
+        this.count = this.Products_in_Cart.length
         this.Qnty_of_Products_in_Cart = rs_response.map((qnty_column) => { return qnty_column.qnty })
-        this.count = this.Ids_of_Products_in_Cart.length
+        console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)
+        /*this.Ids_of_Products_in_Cart = rs_response.map((id_column) => { return id_column.id })
+
+        */
     },
     methods: {
         checkProduct: function (e, id, b) {
@@ -245,9 +250,9 @@
                 v === "p" ? this.Ids_of_Products_in_Cart.push(id) : this.Ids_of_Products_in_Cart.splice(index, 1)
             }
         },
-        ChangeProductQnty: async function( id ) {
+        ChangeProductQnty: async function( id, v) {
             await axios.patch(`/cartupdate/${ id }`, {
-                qnty: this.Qnty_of_Products_in_Cart[this.Ids_of_Products_in_Cart.indexOf(id)]
+                qnty: this.Qnty_of_Products_in_Cart[v]
             })
             .then((response) => {
                 rs_response = response.data
@@ -263,7 +268,7 @@
             })
             .then((response) => {
                 rs_response = response.data
-                this.purchase_status = 'Purchased'
+                this.purchase_status = 'Purchase'
             }, (error) => {
                 rs_response = error;
             });
@@ -279,6 +284,7 @@
     },
     computed: {
         list_of_products_in_cart() {
+            console.log(this.list_of_products)
             return this.list_of_products.filter((item) => {return this.Ids_of_Products_in_Cart.includes(item.id)})
         }
     }
