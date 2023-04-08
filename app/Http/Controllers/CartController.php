@@ -6,18 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
+use App\http\Traits\dataFromStore;
 use Exception;
 
 class CartController extends Controller
 {
+    use dataFromStore;
     function getProductsInCart()
     {
-        $userId = Auth::id();
-        //$data = DB::table('cart')->select('*')->where('purchased', 0)->get();
-        $data = DB::table('cart')->select('*')->where(
-                [['user_id', '=', $userId], ['purchased', '=', 0], ['deleted_at', '=', null]]
-            )->get();
-        return json_decode($data);
+        return $this->getListOfProductsInCart();
     }
     function addNewProductInCart(Request $req)
     {
@@ -36,7 +33,7 @@ class CartController extends Controller
         } catch(Exception $e) {
             return 'Error ocurred: ' . $e->getMessage();
         }
-        return 'updated';
+        return $this->getListOfProductsInCart();
     }
     function cartUpdate(Request $req, $id)
     {
@@ -47,7 +44,7 @@ class CartController extends Controller
         } catch(Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
-        return 'updated';
+        return $this->getListOfProductsInCart();
     }
     function deleteItemInCart($id)
     {
@@ -56,22 +53,7 @@ class CartController extends Controller
         } catch(Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
-        return 'deleted';
-    }
-    function waitPayment(Cart $cart)
-    {
-        try{
-            $cart->fill(
-                [
-                    'pymnt_status' => 'waiting',
-                    'pymnt_status_date' => now()
-                ],
-            );
-            $cart->save();
-        } catch(Exception $e) {
-            return 'Error ocurred';
-        }
-        return 'updated';
+        return $this->getListOfProductsInCart();
     }
     function Paid(Request $req)
     {
