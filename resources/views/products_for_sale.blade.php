@@ -147,7 +147,7 @@
                             <strong>Total</strong>
                         </td>
                         <td>
-                        <strong>[[ format_to_money_style(list_of_products_in_cart.reduce((currentTotal, item) => { return Number(item.price) + Number(currentTotal) }, 0)) ]]</strong>
+                        <strong>[[ total_price_to_pay ]]</strong>
                         </td>
                         <td>
 
@@ -157,8 +157,13 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="submit" :class="purchase_status === 'Order' ? 'btn btn-success' : 'btn btn-danger'"
-              @click="purchase_status === 'Purchase' ? MarkAsPurchased() : MarkAsOrdered()" >[[ purchase_status ]]</button>
+           <form action="/confirm_payment" method="POST" v-show="purchase_status === 'Purchase'">
+               <input type="hidden" name="ids" v-model="Ids_of_Products_in_Cart" />
+               <input type="hidden" name="totalprice" value="[[ total_price_to_pay ]]" />
+               <button type="submit" class="btn btn-danger">Purchase</button>
+           </form>
+          <button type="button" :class="purchase_status === 'Order' ? 'btn btn-success' : 'btn btn-danger'"
+              @click="MarkAsOrdered()"  v-show="purchase_status !== 'Purchase'">Order</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -185,7 +190,8 @@
         Ids_of_Products_in_Cart: [],
         Qnty_of_Products_in_Cart: [],
         Products_in_Cart: [],
-        purchase_status: 'Order'
+        purchase_status: 'Order',
+        total_price_to_pay: 0
       }
     },
     async created() {
@@ -201,6 +207,14 @@
         rs_response = rs.data;
         this.Products_in_Cart = rs_response
         this.updateCart();
+    },
+    watch: {
+        Products_in_Cart(newVal, oldVal) {
+               this.total_price_to_pay = this.format_to_money_style(this.Products_in_Cart.reduce(
+                (currentTotal, item) => {
+                return Number(item.price) + Number(currentTotal)
+                }, 0))
+        }
     },
     methods: {
         updateCart: function() {
@@ -265,7 +279,7 @@
         MarkAsOrdered: function() {
             this.purchase_status = 'Purchase'
         },
-        MarkAsPurchased: async function() {
+        /*MarkAsPurchased: async function() {
             console.log('ids: ' + this.Ids_of_Products_in_Cart.toString())
             await axios.patch('/payment', {
                 ids: this.Ids_of_Products_in_Cart.toString()
@@ -279,7 +293,7 @@
                 rs_response = error;
             });
             console.log(rs_response)
-        },
+        },*/
         format_to_money_style: function(v){
             const formatter = new Intl.NumberFormat('en-US', {
                 style: 'currency',
@@ -289,10 +303,7 @@
         }
     },
     computed: {
-        list_of_products_in_cart() {
-            console.log(this.list_of_products)
-            return this.list_of_products.filter((item) => {return this.Ids_of_Products_in_Cart.includes(item.id)})
-        }
+
     }
   }).mount('#app')
 </script>
