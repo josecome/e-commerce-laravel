@@ -158,7 +158,7 @@
         </div>
         <div class="modal-footer">
           <button type="submit" :class="purchase_status === 'Order' ? 'btn btn-success' : 'btn btn-danger'"
-              @click="MarkAsPurchased" >[[ purchase_status ]]</button>
+              @click="purchase_status === 'Purchase' ? MarkAsPurchased() : MarkAsOrdered()" >[[ purchase_status ]]</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -200,14 +200,15 @@
         const rs = await axios.get('/productincart/{{ Auth::id() }}') //get data
         rs_response = rs.data;
         this.Products_in_Cart = rs_response
-        this.count = this.Products_in_Cart.length
-        this.Qnty_of_Products_in_Cart = rs_response.map((qnty_column) => { return qnty_column.qnty })
-        console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)
-        /*this.Ids_of_Products_in_Cart = rs_response.map((id_column) => { return id_column.id })
-
-        */
+        this.updateCart();
     },
     methods: {
+        updateCart: function() {
+            this.count = this.Products_in_Cart.length
+            this.Ids_of_Products_in_Cart = rs_response.map((ids_column) => { return ids_column.id })
+            this.Qnty_of_Products_in_Cart = rs_response.map((qnty_column) => { return qnty_column.qnty })
+            console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)
+        },
         checkProduct: function (e, id, b) {
             var chk = e.target.textContent;
             console.log(chk)
@@ -245,10 +246,8 @@
                 console.log(rs_response)
             }
 
-            if(rs_response === "updated") {
-                var index = this.Ids_of_Products_in_Cart.indexOf(id)
-                v === "p" ? this.Ids_of_Products_in_Cart.push(id) : this.Ids_of_Products_in_Cart.splice(index, 1)
-            }
+            this.Products_in_Cart = rs_response
+            this.updateCart();
         },
         ChangeProductQnty: async function( id, v) {
             await axios.patch(`/cartupdate/${ id }`, {
@@ -256,10 +255,15 @@
             })
             .then((response) => {
                 rs_response = response.data
+                this.Products_in_Cart = rs_response
+                this.updateCart();
             }, (error) => {
                 rs_response = error;
             });
             console.log(rs_response)
+        },
+        MarkAsOrdered: function() {
+            this.purchase_status = 'Purchase'
         },
         MarkAsPurchased: async function() {
             console.log('ids: ' + this.Ids_of_Products_in_Cart.toString())
@@ -269,6 +273,8 @@
             .then((response) => {
                 rs_response = response.data
                 this.purchase_status = 'Purchase'
+                this.Products_in_Cart = rs_response
+                this.updateCart();
             }, (error) => {
                 rs_response = error;
             });
