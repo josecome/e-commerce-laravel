@@ -53,6 +53,9 @@ class CartController extends Controller
     }
     function deleteItemInCart($id)
     {
+        $cart = Cart::find($id);
+        $this->authorize('update', $cart);
+
         try {
             Cart::find($id)->delete();
         } catch(Exception $e) {
@@ -62,6 +65,8 @@ class CartController extends Controller
     }
     function Paid(Request $req)
     {
+        $cart = Cart::find(Auth::id());
+        $this->authorize('update', $cart);
         try {
             DB::table('cart')->whereIn('id', array_map('intval', explode(',', $req->ids))
                 )->update([
