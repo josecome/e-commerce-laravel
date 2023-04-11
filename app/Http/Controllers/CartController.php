@@ -13,7 +13,7 @@ use Exception;
 class CartController extends Controller
 {
     use dataFromStore;
-    function getProductsInCart()
+    function getProductsInCart(Cart $cart)
     {
         return $this->getListOfProductsInCart();
     }
@@ -39,6 +39,9 @@ class CartController extends Controller
     }
     function cartUpdate(Request $req, $id)
     {
+        $cart = Cart::find($id);
+        $this->authorize('update', $cart);
+
         try{
             $datetime = \Carbon\Carbon::now();
             $formatedDateTime = $datetime->format('Y-m-d H:i:s');

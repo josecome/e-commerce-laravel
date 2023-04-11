@@ -5,7 +5,10 @@ namespace App\Providers;
 use App\Models\User;
 use App\Models\ProdCategories;
 use App\Models\Cart;
+use App\Models\Product;
+use App\Policies\CartPolicy;
 use App\Policies\ProdCategoriesPolicy;
+use App\Policies\ProductPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -19,7 +22,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        ProdCategories::class => ProdCategoriesPolicy::class
+        ProdCategories::class => ProdCategoriesPolicy::class,
+        Cart::class => CartPolicy::class,
+        Product::class => ProductPolicy::class,
     ];
 
     /**
@@ -32,23 +37,23 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('isAdmin', function ($user) {
-            return $user->role === "admin";
+            return $user->role == "admin";
         });
 
         Gate::define('isManager', function ($user) {
-            return $user->role === "manager";
+            return $user->role == "manager";
         });
 
         Gate::define('isSeller', function ($user) {
-            return $user->role === "seller";
+            return $user->role == "seller";
         });
 
         Gate::define('isUser', function ($user) {
-            return $user->role === "user";
+            return $user->role == "user";
         });
 
         Gate::define('belongToUser', function ($user, Cart $cart) {
-            return $user->id === $cart->user_id;
+            return $user->id == $cart->user_id;
         });
     }
 }
