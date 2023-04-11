@@ -42,11 +42,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
     Route::delete('/delete_item_in_cart/{id}', [CartController::class, 'deleteItemInCart']
     )->name('delete_item_in_cart');
-    Route::patch('/payment', [CartController::class, 'Paid'])->name('payment');
+
 });
+
+Route::patch('/payment', [CartController::class, 'Paid']
+)->middleware(['auth', 'limit.purchase.for.user.18'])->name('payment');
 
 Route::get('/add_successfull', function () {
     return view('add_successfull');
+});
+
+Route::get('/limit_purchase_for_age_under_18', function () {
+    return view('limit_purchase_for_age_under_18');
 });
 
 Route::get('/logout',[Controllers::class,'logout']);
