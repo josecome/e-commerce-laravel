@@ -214,14 +214,12 @@
         },
         checkProduct: function (e, id, b) {
             var chk = e.target.textContent;
-            console.log(chk)
             this.product_status[id] = 1;
             chk === "Add to Cart" ? this.count++ : this.count--;
             chk === "Add to Cart" ? this.Product_in_cart(id, "p") : this.Product_in_cart(id, "r") //p -> put in Cart and r -> remove from cart
             chk === "Add to Cart" ? this.product_status[id] = 1 : this.product_status[id] = 0;
         },
         Product_in_cart:  async function(id, v) {
-            alert(id, v)
             var rs_response = "";
             if(v === "p"){
                 await axios.post('/add_product_in_cart', {//put data
@@ -229,6 +227,7 @@
                 })
                 .then((response) => {
                     rs_response = response.data
+                    console.log("rs: " + rs_response)
                 }, (error) => {
                     rs_response = error;
                 });

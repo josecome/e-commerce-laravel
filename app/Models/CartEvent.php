@@ -9,6 +9,6 @@ class CartEvent extends Model
 {
     use HasFactory;
 
-    public $table = "cart_events";
+    public $table = "cart_event";
     protected $guarded = [];
 }

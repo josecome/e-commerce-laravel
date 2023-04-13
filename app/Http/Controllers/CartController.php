@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Cart;
 use App\http\Traits\dataFromStore;
+use App\http\Traits\RecordsEvents;
 use Exception;
 
 class CartController extends Controller
 {
     use dataFromStore;
+    use RecordsEvents;
     function getProductsInCart(Cart $cart)
     {
         return $this->getListOfProductsInCart();
@@ -35,6 +37,7 @@ class CartController extends Controller
         } catch(Exception $e) {
             return 'Error ocurred: ' . $e->getMessage();
         }
+        $event_reg = $this->addNewCartEvent($cart);
         return $this->getListOfProductsInCart();
     }
     function cartUpdate(Request $req, $id)

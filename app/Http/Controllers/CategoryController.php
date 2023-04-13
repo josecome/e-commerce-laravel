@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\ProdCategories;
 use App\Models\Product;
 use App\http\Traits\saveImages;
+use App\http\Traits\RecordsEvents;
 use Exception;
 
 class CategoryController extends Controller
 {
     use saveImages;
+    use RecordsEvents;
     function getCategories()
     {
         $data = ProdCategories::all();
@@ -46,6 +48,7 @@ class CategoryController extends Controller
                 $ctgry->image_link = $filename;
                 $ctgry->user_id = $userId;
                 $ctgry->save();
+                $event_reg = $this->addNewCategoryEvent($ctgry);
             } catch(Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
@@ -57,6 +60,7 @@ class CategoryController extends Controller
                     'image_link' => $filename, 'user_id' => $userId]
                 );
             $result = $category_product->wasChanged() ? "updated" : "not updated";
+            $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
         } catch(Exception $e) {
             $result = 'Error ocurred: ' . $e->getMessage();
         }
