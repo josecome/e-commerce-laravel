@@ -85,6 +85,7 @@
 
   </head>
   <body>
+    @include('flash_messages')
     @include('header')
     @yield('main')
     @include('footer')

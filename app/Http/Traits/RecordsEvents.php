@@ -52,7 +52,7 @@ trait RecordsEvents {
     {
         $userId = Auth::id();
         try{
-            $ctgry = new ProdCategories;
+            $ctgry = new ProdCategoriesEvents;
             $ctgry->category = $category->category;
             $ctgry->description = $category->description;
             $ctgry->image_link = $category->image_link;

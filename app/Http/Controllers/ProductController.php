@@ -72,7 +72,12 @@ class ProductController extends Controller
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
         }
-        return Redirect::to('/product/' . $req->category . '?p='. $result);
+        $type_of_result = "sucess";
+        if (str_contains($result, 'Error')) {
+            $type_of_result = "error";
+        }
+        return Redirect::to('/product/' . $req->category . '?p='. $result
+        )->with($type_of_result, $result);
     }
     function addNewProductForm(Request $req){
         if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {

@@ -49,8 +49,10 @@ class CategoryController extends Controller
                 $ctgry->user_id = $userId;
                 $ctgry->save();
                 $event_reg = $this->addNewCategoryEvent($ctgry);
+                return back()->with('success', $result);
             } catch(Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
+                return back()->with('error', $result);
             }
         } else {
             try{
@@ -59,12 +61,14 @@ class CategoryController extends Controller
                    ['category' => $req->category, 'description' => $req->description,
                     'image_link' => $filename, 'user_id' => $userId]
                 );
-            $result = $category_product->wasChanged() ? "updated" : "not updated";
-            $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
-        } catch(Exception $e) {
-            $result = 'Error ocurred: ' . $e->getMessage();
+                $result = $category_product->wasChanged() ? "updated" : "not updated";
+                $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
+                return back()->with('success', $result);
+            } catch(Exception $e) {
+                $result = 'Error ocurred: ' . $e->getMessage();
+                return back()->with('error', $result);
+            }
         }
-        }
-        return Redirect::to('/add_successfull?p=' . $result);
+        //return Redirect::to('/add_successfull?p=' . $result);
     }
 }
