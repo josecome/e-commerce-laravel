@@ -8,7 +8,7 @@ use App\Models\CartEvent;
 use App\Models\Product;
 use App\Models\ProductEvent;
 use App\Models\ProdCategories;
-use App\Models\ProdCategoriesEvent;
+use App\Models\ProdCategoryEvent;
 use Exception;
 
 trait RecordsEvents {
@@ -52,13 +52,12 @@ trait RecordsEvents {
     {
         $userId = Auth::id();
         try{
-            $ctgry = new ProdCategoriesEvents;
+            $ctgry = new ProdCategoryEvent;
             $ctgry->category = $category->category;
             $ctgry->description = $category->description;
             $ctgry->image_link = $category->image_link;
             $ctgry->user_id = $userId;
             $ctgry->save();
-            $event_reg = $this->addNewCategoryEvent($ctgry);
         } catch(Exception $e) {
             return 'Error ocurred: ' . $e->getMessage();
         }

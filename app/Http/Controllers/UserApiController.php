@@ -24,7 +24,8 @@ class UserApiController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'loggedin' => 1
         ]);
     }
 
@@ -39,8 +40,9 @@ class UserApiController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            "user"  => $user,
-            "token"  => $token
+            'user'  => $user,
+            'token'  => $token,
+            'loggedin' => 1
         ]);
     }
 
