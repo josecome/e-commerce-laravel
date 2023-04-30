@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Controllers;
+use App\Mail\OrderPurchases;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 
 /*
@@ -54,6 +56,11 @@ Route::get('/add_successfull', function () {
 
 Route::get('/limit_purchase_for_age_under_18', function () {
     return view('limit_purchase_for_age_under_18');
+});
+
+Route::get('/email_template_test', function () {//Only for test purpose
+    $cart = Cart::find(1);
+    return new OrderPurchases($cart);
 });
 
 Route::get('/logout',[Controllers::class,'logout']);

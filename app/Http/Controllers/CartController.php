@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Cart;
+use App\Models\User;
 use App\http\Traits\dataFromStore;
 use App\http\Traits\RecordsEvents;
+use App\Mail\OrderPurchases;
+use Illuminate\Support\Facades\Mail;
 use Exception;
 
 class CartController extends Controller
@@ -78,6 +81,9 @@ class CartController extends Controller
         } catch(Exception $e) {
             return 'Error ocurred';
         }
+        $user = User::find(Auth::id());
+        Mail::to($user)->send(new OrderPurchases($cart));
+
         return 'updated';
     }
 }
