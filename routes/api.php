@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserApiController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,11 @@ Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
     return 'loggedin';
 });
 
+Route::middleware('cors')->group(function () {
+    Route::get('/',[ApiController::class,'getCategories'])->name('home');
+});
+
 Route::post('/register', [UserApiController::class, 'register'])->name('register');
 Route::post('/login', [UserApiController::class, 'login'])->name('login');
 Route::post('/logout', [UserApiController::class, 'logout'])->name('logout');
+
