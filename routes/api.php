@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
 
 Route::middleware('cors')->group(function () {
     Route::get('/',[ApiController::class,'getCategories'])->name('home');
+    Route::get('/products_for_sale/{category}',[ApiController::class,'getProducts']
+    )->name('products_for_sale');
 });
 
 Route::post('/register', [UserApiController::class, 'register'])->name('register');
