@@ -13,6 +13,7 @@ use Exception;
 
 class ApiController extends Controller
 {
+    use RecordsEvents;
     function getCategories()
     {
         $data = ProdCategories::all();
