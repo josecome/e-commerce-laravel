@@ -207,10 +207,10 @@
     },
     methods: {
         updateCart: function() {
-            this.count = this.Products_in_Cart.length
+            /*this.count = this.Products_in_Cart.length
             this.Ids_of_Products_in_Cart = rs_response.map((ids_column) => { return ids_column.id })
             this.Qnty_of_Products_in_Cart = rs_response.map((qnty_column) => { return qnty_column.qnty })
-            console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)
+            console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)*/
         },
         checkProduct: function (e, id, b) {
             var chk = e.target.textContent;
