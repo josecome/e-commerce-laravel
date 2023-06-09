@@ -6,13 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use App\Models\ProdCategories;
 use App\Models\Product;
+use App\Models\Cart;
+use App\Mail\OrderPurchases;
+use App\http\Traits\dataFromStore;
+use Illuminate\Support\Facades\Mail;
 use App\http\Traits\RecordsEvents;
 use Exception;
 
 class ApiController extends Controller
 {
+    use RecordsEvents;
+    use dataFromStore;
     use RecordsEvents;
     function getCategories()
     {
@@ -147,5 +154,73 @@ class ApiController extends Controller
             $data = '{"error":"no_data"}';
         }
         return json_decode($data);
+    }
+    function getProductsInCart(Cart $cart)
+    {
+        return $this->getListOfProductsInCart();
+    }
+    function addNewProductInCart(Request $req)
+    {
+        $userId = Auth::id();
+        $totalprice = 0;
+        try{
+            $prod = Product::find($req->id);
+            $cart = new Cart;
+            $cart->product = $prod->product;
+            $cart->qnty = 1;
+            $cart->description = $prod->description;
+            $cart->category = $prod->category;
+            $cart->price = $prod->price;
+            $cart->totalprice = $prod->price;
+            $cart->user_id = $userId;
+            $cart->save();
+        } catch(Exception $e) {
+            return 'Error ocurred: ' . $e->getMessage();
+        }
+        $event_reg = $this->addNewCartEvent($cart);
+        return $this->getListOfProductsInCart();
+    }
+    function cartUpdate(Request $req, $id)
+    {
+        $cart = Cart::find($id);
+        $this->authorize('update', $cart);
+
+        try{
+            $datetime = \Carbon\Carbon::now();
+            $formatedDateTime = $datetime->format('Y-m-d H:i:s');
+            Cart::where('id', $id)->update(['qnty' => $req->qnty, 'updated_at' => $formatedDateTime]);
+        } catch(Exception $e) {
+            return 'Error ocurred' . $e->getMessage();
+        }
+        return $this->getListOfProductsInCart();
+    }
+    function deleteItemInCart($id)
+    {
+        $cart = Cart::find($id);
+        $this->authorize('update', $cart);
+
+        try {
+            Cart::find($id)->delete();
+        } catch(Exception $e) {
+            return 'Error ocurred' . $e->getMessage();
+        }
+        return $this->getListOfProductsInCart();
+    }
+    function Paid(Request $req)
+    {
+        $cart = Cart::find(Auth::id());
+        $this->authorize('update', $cart);
+        try {
+            DB::table('cart')->whereIn('id', array_map('intval', explode(',', $req->ids))
+                )->update([
+                'purchased' => 1
+            ]);
+        } catch(Exception $e) {
+            return 'Error ocurred';
+        }
+        $user = User::find(Auth::id());
+        Mail::to($user)->send(new OrderPurchases($cart));
+
+        return 'updated';
     }
 }

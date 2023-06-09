@@ -37,20 +37,6 @@
             padding-right: 60px;
         }
     </style>
-@if (Route::has('login'))
-        <div style="position: absolute; top: 2px; right: 0px; margin-right: 8px;">
-            @auth
-                <span style="color: gray; padding-right: 10px;">User: {{ auth()->user()->name }}</span>
-                <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline" style="text-decoration: none">Log in</a>
-
-                @if (Route::has('register'))
-                    <span style="color: white">/</span> <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline" style="text-decoration: none">Register</a>
-                @endif
-            @endauth
-        </div>
-   @endif
 </div>
 <div class="album py-5 bg-light">
     <div class="container">
@@ -207,10 +193,10 @@
     },
     methods: {
         updateCart: function() {
-            /*this.count = this.Products_in_Cart.length
+            this.count = this.Products_in_Cart.length
             this.Ids_of_Products_in_Cart = rs_response.map((ids_column) => { return ids_column.id })
             this.Qnty_of_Products_in_Cart = rs_response.map((qnty_column) => { return qnty_column.qnty })
-            console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)*/
+            console.log('Qnty: ' + this.Qnty_of_Products_in_Cart)
         },
         checkProduct: function (e, id, b) {
             var chk = e.target.textContent;
