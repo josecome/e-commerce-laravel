@@ -26,7 +26,11 @@ class ApiController extends Controller
         $data = ProdCategories::all();
         return json_decode($data);
     }
-
+    function getListCategories()
+    {
+        $data = DB::table('prod_categories')->select('category')->get();
+        return json_decode($data);
+    }
     function addNewCategory(Request $req)
     {
         $result = "Record Successfully added!";
