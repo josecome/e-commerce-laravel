@@ -42,7 +42,15 @@
     <div class="container">
         <div id="app" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div style="height: 60px; width: 100%; background-color: #EAEDED;">
-            <span style="float: left; font-size: 28px; padding: 8px;"><strong>Available Products</strong></span>
+            <span style="float: left; font-size: 28px; padding: 8px;"><strong>
+                Available Products
+                <select v-model="selected_category">
+                    <option disabled value="">Other category</option>
+                    <option v-for="category in category_options" :value="category">
+                        [[ category ]]
+                    </option>
+                </select>
+            </strong></span>
             <a href="#" class="notification" style="float: right; padding: 8px;"
             data-toggle="modal" data-target="#myModal"
             >
@@ -166,7 +174,9 @@
         Qnty_of_Products_in_Cart: [],
         Products_in_Cart: [],
         purchase_status: 'Order',
-        total_price_to_pay: 0
+        total_price_to_pay: 0,
+        category_options: [],
+        selected_category: '{{ Request::segment(2) }}'
       }
     },
     async created() {
@@ -182,13 +192,28 @@
         rs_response = rs.data;
         this.Products_in_Cart = rs_response
         this.updateCart();
+
+        const res = await axios.get('/listofcategories') //get data
+        console.log('z')
+        console.log(res.data)
+        this.category_options = res.data.map((ctgry) => ctgry.category);
     },
     watch: {
         Products_in_Cart(newVal, oldVal) {
-               this.total_price_to_pay = this.format_to_money_style(this.Products_in_Cart.reduce(
+            this.total_price_to_pay = this.format_to_money_style(this.Products_in_Cart.reduce(
                 (currentTotal, item) => {
                 return Number(item.price) + Number(currentTotal)
                 }, 0))
+        },
+        async selected_category(newVal, oldVal) {
+            if (confirm(`Show ${ this.selected_category } products`) == true) {
+                try {
+                    const rs = await axios.get(`/products_for_sale_list/${ this.selected_category }`)
+                    this.list_of_products = rs.data
+                } catch(err) {
+                    console.log(err)
+                }
+            }
         }
     },
     methods: {

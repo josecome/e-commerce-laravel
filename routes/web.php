@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 |
 */
 Route::get('/',[CategoryController::class,'getCategories'])->name('home');
+Route::get('/listofcategories',[CategoryController::class,'getListCategories']
+)->name('listofcategories');
 Route::get('/product/{category}',[ProductController::class, 'getProducts']
 )->middleware('auth')->name('product');
 Route::get('/product_form',[ProductController::class, 'addNewProductForm']
