@@ -5,6 +5,9 @@ This project aim to demostrate how E-Commerce webpage can be developed using PHP
 Products in TV category. Adding products to Chart
 <img src="public/products.jpg">
 
+Highlighting Product
+<img src="public/product_details.jpg">
+
 Products in Chart
 <img src="public/chart.jpg">
 
