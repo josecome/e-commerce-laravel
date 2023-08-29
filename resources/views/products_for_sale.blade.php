@@ -281,7 +281,7 @@
         Products_in_Cart(newVal, oldVal) {
             this.total_price_to_pay = this.format_to_money_style(this.Products_in_Cart.reduce(
                 (currentTotal, item) => {
-                return Number(item.price) + Number(currentTotal)
+                return Number(item.price * item.qnty) + Number(currentTotal)
                 }, 0))
         },
         async selected_category(newVal, oldVal) {
