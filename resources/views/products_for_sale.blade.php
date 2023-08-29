@@ -128,21 +128,21 @@
             </tr>
             <tr>
                 <td colspan="2" style="text-align: center; display: flex;">
-                <div v-for="related in rel_prod">
+                <div v-for="product_related in list_of_products.slice(1, 4)">
                     <table>
                         <tr>
                             <td>
-                                <img :src="[ '/storage/images/products/' + selected_image_link ]"
-                                    :title="[ selected_product ]"
+                                <img :src="[ '/storage/images/products/' + product_related.image_link ]"
+                                    :title="[ product_related.description ]"
                                     style="width: 120px; height: 80px;"
                                 />
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>[[ selected_product ]]</strong></td>
+                            <td><strong>[[ product_related.product ]]</strong></td>
                         </tr>
                         <tr>
-                            <td>[[ selected_description ]]</td>
+                            <td>[[ product_related.description ]]</td>
                         </tr>
                         <tr>
                             <td><button>Add to Cart</button></td>
