@@ -13,7 +13,7 @@ Highlighting Product
 
 Products in Chart
 
-<img src="public/chart.jpg">
+<img src="public/cart.jpg">
 
 ## To run the project
 
