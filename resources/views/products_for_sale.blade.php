@@ -64,6 +64,9 @@
             <img :src="[ '/storage/images/products/' + product_item.image_link ]"
                 :title="[ product_item.product ]"
                 style="width: 100%; height: 100%;"
+                data-toggle="modal"
+                data-target="#productModal"
+                @click="setSelectedProduct(product_item.product, product_item.description, product_item.image_link)"
             />
             </text></svg>
             <div class="card-body" style='background-color: #D4E6F1;'>
@@ -84,7 +87,79 @@
             </div>
             </div>
         </div>
-        <!--                                                 -->
+        <!--Product Zoom Modal-->
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productModalLabel"><i class="bi bi-check-circle"></i>Successfull added to Cart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table>
+            <tr>
+                <td>
+                    <img :src="[ '/storage/images/products/' + selected_image_link ]"
+                      :title="[ selected_product ]"
+                      style="width: 100%; height: 100%;"
+                    />
+                </td>
+                <td>
+                    <div style="float: left; margin-top: 0px;">
+                       <strong>[[ selected_product ]]</strong><br>
+                       [[ selected_description ]]
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button style="padding: 10px" class="btn btn-secondary rounded-pill">View Cart</button>
+                    <button style="padding: 10px" class="btn btn-secondary rounded-pill">Continue Shopping</button>
+                    <button style="padding: 10px" class="btn btn-secondary rounded-pill">Checkout</button>
+                </td>
+            </tr>
+            <tr>
+            <td colspan="2" style="text-align: center;">
+                <span>Related Products</span>
+            </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center; display: flex;">
+                <div v-for="related in rel_prod">
+                    <table>
+                        <tr>
+                            <td>
+                                <img :src="[ '/storage/images/products/' + selected_image_link ]"
+                                    :title="[ selected_product ]"
+                                    style="width: 120px; height: 80px;"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>[[ selected_product ]]</strong></td>
+                        </tr>
+                        <tr>
+                            <td>[[ selected_description ]]</td>
+                        </tr>
+                        <tr>
+                            <td><button>Add to Cart</button></td>
+                        </tr>
+                    </table>
+                </div>
+                </td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -176,7 +251,11 @@
         purchase_status: 'Order',
         total_price_to_pay: 0,
         category_options: [],
-        selected_category: '{{ Request::segment(2) }}'
+        selected_category: '{{ Request::segment(2) }}',
+        selected_product: '',
+        selected_description: '',
+        selected_image_link: '',
+        rel_prod: [1, 2, 3]
       }
     },
     async created() {
@@ -217,6 +296,12 @@
         }
     },
     methods: {
+        setSelectedProduct: function (s_prod, s_desc, s_link) {
+            this.selected_product = s_prod;
+            this.selected_description = s_desc;
+            this.selected_image_link = s_link;
+            console.log(s_prod + ',' + s_desc + ',' + s_link)
+        },
         updateCart: function() {
             this.count = this.Products_in_Cart.length
             this.Ids_of_Products_in_Cart = rs_response.map((ids_column) => { return ids_column.id })
