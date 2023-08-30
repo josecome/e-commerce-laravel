@@ -165,7 +165,7 @@
     <div class="modal-dialog">
 
       <!-- Modal content-->
-      <div class="modal-content" style="width: 100%;">
+      <div class="modal-content" style="width: 600px;">
         <div class="modal-header" style="width: 100%;">
           <h4 class="modal-title" style="float: left;"><strong>Products in Cart</strong></h4>
           <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
@@ -174,7 +174,7 @@
           <table>
                 <thead>
                     <tr>
-                        <th>Product</th><th>Price</th><th>Qnty</th><th>Remove</th>
+                        <th>Product</th><th>Price</th><th>Qnty</th><th>Total (Item)</th><th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -197,11 +197,14 @@
                             />
                         </td>
                         <td>
+                            [[ format_to_money_style(product_item_in_cart.price * product_item_in_cart.qnty) ]]
+                        </td>
+                        <td>
                             <i @click="Product_in_cart(product_item_in_cart.id, 'r')" class="bi bi-x-octagon-fill" style="float: right; padding-left: 6px; color: #E74C3C;"></i>
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="3">
                             <strong>Total</strong>
                         </td>
                         <td>
