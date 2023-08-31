@@ -52,7 +52,7 @@
                 </select>
             </strong></span>
             <a href="#" class="notification" style="float: right; padding: 8px;"
-            data-toggle="modal" data-target="#myModal"
+            data-toggle="modal" data-target="#cartModal"
             >
                 <span class="bi bi-cart-check Icn"></span>
                 <span class="badge">[[ count ]]</span>
@@ -116,9 +116,9 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <button style="padding: 10px" class="btn btn-secondary rounded-pill">View Cart</button>
-                    <button style="padding: 10px" class="btn btn-secondary rounded-pill">Continue Shopping</button>
-                    <button style="padding: 10px" class="btn btn-secondary rounded-pill">Checkout</button>
+                    <button data-toggle="modal" data-target="#cartModal" style="padding: 10px" class="btn btn-secondary rounded-pill">View Cart</button>
+                    <button data-dismiss="modal" style="padding: 10px" class="btn btn-secondary rounded-pill">Continue Shopping</button>
+                    <button data-toggle="modal" data-target="#cartModal" @click="MarkAsOrdered()" style="padding: 10px" class="btn btn-secondary rounded-pill">Checkout</button>
                 </td>
             </tr>
             <tr>
@@ -145,7 +145,7 @@
                             <td>[[ product_related.description ]]</td>
                         </tr>
                         <tr>
-                            <td><button>Add to Cart</button></td>
+                            <td><button @click="checkProduct($event, product_related.id, product_related.product)">Add to Cart</button></td>
                         </tr>
                     </table>
                 </div>
@@ -161,11 +161,11 @@
   </div>
 </div>
   <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="cartModal" role="dialog">
     <div class="modal-dialog">
 
       <!-- Modal content-->
-      <div class="modal-content" style="width: 600px;">
+      <div class="modal-content" style="width: 700px;">
         <div class="modal-header" style="width: 100%;">
           <h4 class="modal-title" style="float: left;"><strong>Products in Cart</strong></h4>
           <button type="button" class="close" data-dismiss="modal" style="float: right;">&times;</button>
@@ -174,7 +174,7 @@
           <table>
                 <thead>
                     <tr>
-                        <th>Product</th><th>Price</th><th>Qnty</th><th>Total (Item)</th><th>Remove</th>
+                        <th>Product</th><th>Description</th><th>Price</th><th>Qnty</th><th>Total (Item)</th><th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,6 +184,9 @@
                         style="border-bottom: 2px solid #BFC9CA; padding: 6px;">
                         <td>
                             [[ product_item_in_cart.product ]]
+                        </td>
+                        <td>
+                            [[ product_item_in_cart.description ]]
                         </td>
                         <td>
                             [[ format_to_money_style(product_item_in_cart.price) ]]
@@ -204,7 +207,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="4">
                             <strong>Total</strong>
                         </td>
                         <td>
@@ -224,7 +227,7 @@
                <button type="submit" class="btn btn-danger">Purchase</button>
            </form>
           <button type="button" :class="purchase_status === 'Order' ? 'btn btn-success' : 'btn btn-danger'"
-              @click="MarkAsOrdered()"  v-show="purchase_status !== 'Purchase'">Order</button>
+              @click="MarkAsOrdered()" v-show="purchase_status !== 'Purchase'">Order</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
