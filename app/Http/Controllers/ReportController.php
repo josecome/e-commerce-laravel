@@ -100,4 +100,7 @@ class ReportController extends Controller
 
         return json_decode($data);
     }
+    function dsh() {
+        return json_decode('a:b');
+    }
 }

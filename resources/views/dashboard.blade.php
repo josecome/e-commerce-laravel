@@ -4,17 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.108.0">
-    <title>Dashboard Template · Bootstrap v5.3</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
-
-
-
-
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -69,9 +63,6 @@
       }
     </style>
 
-
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
   </head>
   <body>
 
@@ -181,9 +172,9 @@
         </div>
       </div>
 
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+      <canvas class="my-4 w-100" id="Chrt" width="900" height="380"></canvas>
 
-      <h2>Section title</h2>
+      <!--<h2>Section title</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
@@ -309,15 +300,58 @@
               <td>text</td>
             </tr>
           </tbody>
-        </table>
+        </table>-->
       </div>
     </main>
   </div>
 </div>
 
+<script>
+  const ctx = document.getElementById('Chrt');
+  var lbls = [];
+  var datar = [];
+  var titl = "";
+  async function getData(v) {
+    try {
+      const res = await axios.get('/dashboard_data', {
+        params: {
+          type_of_data: 'products'
+        }
+      });
+      //titl = res.title;
+      //lbls = res.values;
+      //datar = res.quantity
+      titl = "Products";
+      lbls = ['TV', 'LapTop', 'Freezer', 'AC', 'Table', 'Chair']
+      datar = [12, 19, 3, 5, 6, 3];
+      new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: lbls,
+      datasets: [{
+        label: titl,
+        data: datar,
+        backgroundColor: "rgba(103, 140, 249 , 1)",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  getData('products');
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
   </body>
 </html>

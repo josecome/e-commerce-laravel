@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Controllers;
 use App\Mail\OrderPurchases;
 use App\Models\Cart;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
     Route::delete('/delete_item_in_cart/{id}', [CartController::class, 'deleteItemInCart']
     )->name('delete_item_in_cart');
+    Route::get('dashboard_data', [ReportController::class, 'dsh']);
 
 });
 
