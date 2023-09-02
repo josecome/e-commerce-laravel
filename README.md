@@ -15,6 +15,10 @@ Products in Chart
 
 <img src="public/cart.jpg">
 
+Dashboar for Managers
+
+<img scr="public/dashboard_chart.jpg">
+
 ## To run the project
 
 Type in commandline
