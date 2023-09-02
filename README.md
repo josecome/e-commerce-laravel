@@ -17,7 +17,7 @@ Products in Chart
 
 Dashboar for Managers
 
-<img scr="public/dashboard_chart.jpg">
+<img src="public/dashboard_chart.jpg">
 
 ## To run the project
 
