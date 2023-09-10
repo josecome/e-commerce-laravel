@@ -34,7 +34,7 @@ class ApiController extends Controller
     function addNewCategory(Request $req)
     {
         $result = "Record Successfully added!";
-        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+        if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
 
@@ -44,11 +44,11 @@ class ApiController extends Controller
         $type_of_item = "prod_categories";
         $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
-        if($filename === "No file") {
+        if ($filename === "No file") {
             $filename = $req->image_link;
         }
-        if(!$req->filled('id')) {
-            try{
+        if (!$req->filled('id')) {
+            try {
                 $ctgry = new ProdCategories;
                 $ctgry->category = $req->category;
                 $ctgry->description = $req->description;
@@ -57,25 +57,27 @@ class ApiController extends Controller
                 $ctgry->save();
                 $event_reg = $this->addNewCategoryEvent($ctgry);
                 return back()->with('success', $result);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
                 return response()->json([
                     'error' => $result
                 ]);
             }
         } else {
-            try{
+            try {
                 $category_product = ProdCategories::updateOrCreate(
-                   ['id' => $req->id],
-                   ['category' => $req->category, 'description' => $req->description,
-                    'image_link' => $filename, 'user_id' => $userId]
+                    ['id' => $req->id],
+                    [
+                        'category' => $req->category, 'description' => $req->description,
+                        'image_link' => $filename, 'user_id' => $userId
+                    ]
                 );
                 $result = $category_product->wasChanged() ? "updated" : "not updated";
                 $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
                 return response()->json([
                     'success' => $result
                 ]);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
                 return response()->json([
                     'error' => $result
@@ -101,18 +103,18 @@ class ApiController extends Controller
     }
     function addNewProduct(Request $req)
     {
-        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+        if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
         $result = "Record Successfully added!";
         $type_of_item = "products";
         $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
-        if($filename === "No file") {
+        if ($filename === "No file") {
             $filename = $req->image_link;
         }
-        if(!$req->filled('id')) {//Mean that it is new record
-            try{
+        if (!$req->filled('id')) { //Mean that it is new record
+            try {
                 $prod = new Product;
                 $prod->product = $req->product;
                 $prod->description = $req->description;
@@ -122,19 +124,21 @@ class ApiController extends Controller
                 $prod->user_id = $userId;
                 $prod->save();
                 $event_reg = $this->addNewProductEvent($prod);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
-        } else {//Record exist in data base
-            try{
+        } else { //Record exist in data base
+            try {
                 $product = Product::updateOrCreate(
                     ['id' => $req->id],
-                    ['product' => $req->product, 'description' => $req->description, 'price' => $req->price,
-                    'image_link' => $filename, 'user_id' => $userId]
+                    [
+                        'product' => $req->product, 'description' => $req->description, 'price' => $req->price,
+                        'image_link' => $filename, 'user_id' => $userId
+                    ]
                 );
                 $result = $product->wasChanged() ? "updated" : "not updated";
                 $event_reg = $this->addNewProductEvent(Product::find($req->id));
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
         }
@@ -146,15 +150,16 @@ class ApiController extends Controller
             $type_of_result => $result
         ]);
     }
-    function addNewProductForm(Request $req){
-        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+    function addNewProductForm(Request $req)
+    {
+        if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
         $data = null;
-        if($req->filled('t') && $req->filled('id')){
+        if ($req->filled('t') && $req->filled('id')) {
             $data = DB::table('products')->select('*')->where('id', $req->id)->first();
         }
-        if(is_null($data)){
+        if (is_null($data)) {
             $data = '{"error":"no_data"}';
         }
         return json_decode($data);
@@ -167,7 +172,7 @@ class ApiController extends Controller
     {
         $userId = Auth::id();
         $totalprice = 0;
-        try{
+        try {
             $prod = Product::find($req->id);
             $cart = new Cart;
             $cart->product = $prod->product;
@@ -178,7 +183,7 @@ class ApiController extends Controller
             $cart->totalprice = $prod->price;
             $cart->user_id = $userId;
             $cart->save();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred: ' . $e->getMessage();
         }
         $event_reg = $this->addNewCartEvent($cart);
@@ -189,11 +194,11 @@ class ApiController extends Controller
         $cart = Cart::find($id);
         $this->authorize('update', $cart);
 
-        try{
+        try {
             $datetime = \Carbon\Carbon::now();
             $formatedDateTime = $datetime->format('Y-m-d H:i:s');
             Cart::where('id', $id)->update(['qnty' => $req->qnty, 'updated_at' => $formatedDateTime]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
         return $this->getListOfProductsInCart();
@@ -205,7 +210,7 @@ class ApiController extends Controller
 
         try {
             Cart::find($id)->delete();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
         return $this->getListOfProductsInCart();
@@ -215,11 +220,13 @@ class ApiController extends Controller
         $cart = Cart::find(Auth::id());
         $this->authorize('update', $cart);
         try {
-            DB::table('cart')->whereIn('id', array_map('intval', explode(',', $req->ids))
-                )->update([
+            DB::table('cart')->whereIn(
+                'id',
+                array_map('intval', explode(',', $req->ids))
+            )->update([
                 'purchased' => 1
             ]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred';
         }
         $user = User::find(Auth::id());

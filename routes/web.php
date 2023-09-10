@@ -21,37 +21,59 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[CategoryController::class,'getCategories'])->name('home');
-Route::get('/listofcategories',[CategoryController::class,'getListCategories']
+
+Route::get('/', [CategoryController::class, 'getCategories'])->name('home');
+Route::get(
+    '/listofcategories',
+    [CategoryController::class, 'getListCategories']
 )->name('listofcategories');
-Route::get('/product/{category}',[ProductController::class, 'getProducts']
+Route::get(
+    '/product/{category}',
+    [ProductController::class, 'getProducts']
 )->middleware('auth')->name('product');
-Route::get('/product_form',[ProductController::class, 'addNewProductForm']
+Route::get(
+    '/product_form',
+    [ProductController::class, 'addNewProductForm']
 )->middleware('auth')->name('product_form');
-Route::post('/add_product',[ProductController::class, 'addNewProduct']
+Route::post(
+    '/add_product',
+    [ProductController::class, 'addNewProduct']
 )->middleware('auth')->name('add_product');
-Route::post('/add_category',[CategoryController::class, 'addNewCategory']
+Route::post(
+    '/add_category',
+    [CategoryController::class, 'addNewCategory']
 )->middleware('auth')->name('add_category');
-Route::get('/products_for_sale/{category}',[ProductController::class, 'ProductsForSale']
+Route::get(
+    '/products_for_sale/{category}',
+    [ProductController::class, 'ProductsForSale']
 )->name('products_for_sale');
-Route::get('/products_for_sale_list/{category}',[ProductController::class, 'ProductsForSaleList']
+Route::get(
+    '/products_for_sale_list/{category}',
+    [ProductController::class, 'ProductsForSaleList']
 )->name('products_for_sale_list');
 
-Route::post('/add_product_in_cart', [CartController::class, 'addNewProductInCart']
+Route::post(
+    '/add_product_in_cart',
+    [CartController::class, 'addNewProductInCart']
 )->middleware('auth')->name('add_product_in_cart');
 
-Route::get('/productincart/{userid}', [CartController::class, 'getProductsInCart']
+Route::get(
+    '/productincart/{userid}',
+    [CartController::class, 'getProductsInCart']
 )->middleware('auth')->name('productincart');
 
 Route::middleware('auth')->group(function () {
     Route::patch('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
-    Route::delete('/delete_item_in_cart/{id}', [CartController::class, 'deleteItemInCart']
+    Route::delete(
+        '/delete_item_in_cart/{id}',
+        [CartController::class, 'deleteItemInCart']
     )->name('delete_item_in_cart');
     Route::get('dashboard_data', [ReportController::class, 'dsh']);
-
 });
 
-Route::patch('/payment', [CartController::class, 'Paid']
+Route::patch(
+    '/payment',
+    [CartController::class, 'Paid']
 )->middleware(['auth', 'limit.purchase.for.user.18'])->name('payment');
 
 Route::get('/add_successfull', function () {
@@ -62,12 +84,12 @@ Route::get('/limit_purchase_for_age_under_18', function () {
     return view('limit_purchase_for_age_under_18');
 });
 
-Route::get('/email_template_test', function () {//Only for test purpose
+Route::get('/email_template_test', function () { //Only for test purpose
     $cart = Cart::find(1);
     return new OrderPurchases($cart);
 });
 
-Route::get('/logout',[Controllers::class,'logout']);
+Route::get('/logout', [Controllers::class, 'logout']);
 
 Route::get('/dashboard', function (Request $req) {
     //$req->session()->put('user', $user);
@@ -80,4 +102,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

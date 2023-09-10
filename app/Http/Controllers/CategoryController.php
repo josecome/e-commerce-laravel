@@ -22,7 +22,7 @@ class CategoryController extends Controller
     function getCategories()
     {
         $data = ProdCategories::all();
-        return view('home',['prodcat'=>$data]);
+        return view('home', ['prodcat' => $data]);
     }
     function getListCategories()
     {
@@ -32,7 +32,7 @@ class CategoryController extends Controller
     function addNewCategory(Request $req)
     {
         $result = "Record Successfully added!";
-        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+        if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
 
@@ -42,11 +42,11 @@ class CategoryController extends Controller
         $type_of_item = "prod_categories";
         $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
-        if($filename === "No file") {
+        if ($filename === "No file") {
             $filename = $req->image_link;
         }
-        if(!$req->filled('id')) {
-            try{
+        if (!$req->filled('id')) {
+            try {
                 $ctgry = new ProdCategories;
                 $ctgry->category = $req->category;
                 $ctgry->description = $req->description;
@@ -55,21 +55,23 @@ class CategoryController extends Controller
                 $ctgry->save();
                 $event_reg = $this->addNewCategoryEvent($ctgry);
                 return back()->with('success', $result);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
                 return back()->with('error', $result);
             }
         } else {
-            try{
+            try {
                 $category_product = ProdCategories::updateOrCreate(
-                   ['id' => $req->id],
-                   ['category' => $req->category, 'description' => $req->description,
-                    'image_link' => $filename, 'user_id' => $userId]
+                    ['id' => $req->id],
+                    [
+                        'category' => $req->category, 'description' => $req->description,
+                        'image_link' => $filename, 'user_id' => $userId
+                    ]
                 );
                 $result = $category_product->wasChanged() ? "updated" : "not updated";
                 $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
                 return back()->with('success', $result);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
                 return back()->with('error', $result);
             }

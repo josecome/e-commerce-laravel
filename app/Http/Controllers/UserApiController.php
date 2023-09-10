@@ -13,7 +13,7 @@ class UserApiController extends Controller
     {
         if (!Auth::attempt($req->only('email', 'password'))) {
             //return response()->json([ 'message' => 'Invalid login details', 401 ]);
-            return response()->json([ 'message' => $req["email"] . ',' . $req->password, 401 ]);
+            return response()->json(['message' => $req["email"] . ',' . $req->password, 401]);
         }
 
         $user = User::where('email',  $req->email)->firstOrFail();
@@ -32,9 +32,9 @@ class UserApiController extends Controller
     public function register(Request $req)
     {
         $user = User::create([
-              "name" => $req->name,
-              "email" => $req->email,
-              "password" => Hash::make($req->password)
+            "name" => $req->name,
+            "email" => $req->email,
+            "password" => Hash::make($req->password)
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -46,7 +46,8 @@ class UserApiController extends Controller
         ]);
     }
 
-    public function logout(Request $req) {
+    public function logout(Request $req)
+    {
         //Session::flush();
         //Auth::logout();
         //return redirect('login');

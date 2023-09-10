@@ -22,7 +22,7 @@ class ProductController extends Controller
     function getProducts($category)
     {
         $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return view('product', ['prod'=>$data]);
+        return view('product', ['prod' => $data]);
     }
     function ProductsForSale($category)
     {
@@ -35,18 +35,18 @@ class ProductController extends Controller
     }
     function addNewProduct(Request $req)
     {
-        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+        if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
         $result = "Record Successfully added!";
         $type_of_item = "products";
         $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
-        if($filename === "No file") {
+        if ($filename === "No file") {
             $filename = $req->image_link;
         }
-        if(!$req->filled('id')) {//Mean that it is new record
-            try{
+        if (!$req->filled('id')) { //Mean that it is new record
+            try {
                 $prod = new Product;
                 $prod->product = $req->product;
                 $prod->description = $req->description;
@@ -56,19 +56,21 @@ class ProductController extends Controller
                 $prod->user_id = $userId;
                 $prod->save();
                 $event_reg = $this->addNewProductEvent($prod);
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
-        } else {//Record exist in data base
-            try{
+        } else { //Record exist in data base
+            try {
                 $product = Product::updateOrCreate(
                     ['id' => $req->id],
-                    ['product' => $req->product, 'description' => $req->description, 'price' => $req->price,
-                    'image_link' => $filename, 'user_id' => $userId]
+                    [
+                        'product' => $req->product, 'description' => $req->description, 'price' => $req->price,
+                        'image_link' => $filename, 'user_id' => $userId
+                    ]
                 );
                 $result = $product->wasChanged() ? "updated" : "not updated";
                 $event_reg = $this->addNewProductEvent(Product::find($req->id));
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
             }
         }
@@ -76,17 +78,19 @@ class ProductController extends Controller
         if (str_contains($result, 'Error')) {
             $type_of_result = "error";
         }
-        return Redirect::to('/product/' . $req->category . '?p='. $result
+        return Redirect::to(
+            '/product/' . $req->category . '?p=' . $result
         )->with($type_of_result, $result);
     }
-    function addNewProductForm(Request $req){
-        if (! Gate::allows('isAdmin') && ! Gate::allows('isManager') ) {
+    function addNewProductForm(Request $req)
+    {
+        if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
         $data = null;
-        if($req->filled('t') && $req->filled('id')){
+        if ($req->filled('t') && $req->filled('id')) {
             $data = DB::table('products')->select('*')->where('id', $req->id)->first();
         }
-        return view('/product_form', ['prod'=>$data]);
+        return view('/product_form', ['prod' => $data]);
     }
 }

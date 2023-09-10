@@ -22,7 +22,7 @@ class LimitPurchaseForAgeUnder18
     {
         $age = (int) DB::table('view_users')->where('id', Auth::id())->value('age');
         $totalprice = (int) $req->totalprice;
-        if($age < 18 && $totalprice > 10000) {
+        if ($age < 18 && $totalprice > 10000) {
             return redirect()->route('limit_purchase_for_age_under_18');
         }
         return $next($req);

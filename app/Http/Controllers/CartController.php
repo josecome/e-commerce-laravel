@@ -26,7 +26,7 @@ class CartController extends Controller
     {
         $userId = Auth::id();
         $totalprice = 0;
-        try{
+        try {
             $prod = Product::find($req->id);
             $cart = new Cart;
             $cart->product = $prod->product;
@@ -37,7 +37,7 @@ class CartController extends Controller
             $cart->totalprice = $prod->price;
             $cart->user_id = $userId;
             $cart->save();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred: ' . $e->getMessage();
         }
         $event_reg = $this->addNewCartEvent($cart);
@@ -48,11 +48,11 @@ class CartController extends Controller
         $cart = Cart::find($id);
         $this->authorize('update', $cart);
 
-        try{
+        try {
             $datetime = \Carbon\Carbon::now();
             $formatedDateTime = $datetime->format('Y-m-d H:i:s');
             Cart::where('id', $id)->update(['qnty' => $req->qnty, 'updated_at' => $formatedDateTime]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
         return $this->getListOfProductsInCart();
@@ -64,7 +64,7 @@ class CartController extends Controller
 
         try {
             Cart::find($id)->delete();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
         return $this->getListOfProductsInCart();
@@ -74,11 +74,13 @@ class CartController extends Controller
         $cart = Cart::find(Auth::id());
         $this->authorize('update', $cart);
         try {
-            DB::table('cart')->whereIn('id', array_map('intval', explode(',', $req->ids))
-                )->update([
+            DB::table('cart')->whereIn(
+                'id',
+                array_map('intval', explode(',', $req->ids))
+            )->update([
                 'purchased' => 1
             ]);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return 'Error ocurred';
         }
         $user = User::find(Auth::id());
