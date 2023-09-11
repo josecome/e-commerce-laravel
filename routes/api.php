@@ -28,6 +28,10 @@ Route::middleware('cors')->group(function () {
         [ApiController::class, 'getListCategories']
     )->name('listofcategories');
     Route::get(
+        '/product/{category}',
+        [ApiController::class, 'getProducts']
+    )->middleware('auth')->name('product');
+    Route::get(
         '/products_for_sale/{category}',
         [ApiController::class, 'getProducts']
     )->name('products_for_sale');
