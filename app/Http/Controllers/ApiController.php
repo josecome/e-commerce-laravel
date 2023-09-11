@@ -234,4 +234,50 @@ class ApiController extends Controller
 
         return 'updated';
     }
+    function addNewProduct(Request $req)
+    {
+        $result = "Record Successfully added!";
+        $type_of_item = "products";
+        $userId = Auth::id();
+        $filename = $this->categories_products_image($req,  $type_of_item);
+        if ($filename === "No file") {
+            $filename = $req->image_link;
+        }
+        if (!$req->filled('id')) { //Mean that it is new record
+            try {
+                $prod = new Product;
+                $prod->product = $req->product;
+                $prod->description = $req->description;
+                $prod->category = $req->category;
+                $prod->price = $req->price;
+                $prod->image_link = $filename;
+                $prod->user_id = $userId;
+                $prod->save();
+                $event_reg = $this->addNewProductEvent($prod);
+            } catch (Exception $e) {
+                $result = 'Error ocurred: ' . $e->getMessage();
+            }
+        } else { //Record exist in data base
+            try {
+                $product = Product::updateOrCreate(
+                    ['id' => $req->id],
+                    [
+                        'product' => $req->product, 'description' => $req->description, 'price' => $req->price,
+                        'image_link' => $filename, 'user_id' => $userId
+                    ]
+                );
+                $result = $product->wasChanged() ? "updated" : "not updated";
+                $event_reg = $this->addNewProductEvent(Product::find($req->id));
+            } catch (Exception $e) {
+                $result = 'Error ocurred: ' . $e->getMessage();
+            }
+        }
+        $type_of_result = "sucess";
+        if (str_contains($result, 'Error')) {
+            $type_of_result = "error";
+        }
+        return response()->json([
+            $type_of_result  => $result,
+        ]);
+    }
 }

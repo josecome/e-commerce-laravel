@@ -35,6 +35,10 @@ Route::middleware('cors')->group(function () {
         '/productincart/{userid}',
         [ApiController::class, 'getProductsInCart']
     )->name('productincart');
+    Route::post(
+        '/add_product',
+        [ApiController::class, 'addNewProduct']
+    )->name('add_product');
 });
 
 Route::post('/register', [UserApiController::class, 'register'])->name('register');
