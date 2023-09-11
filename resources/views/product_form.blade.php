@@ -1,6 +1,5 @@
 @extends('template')
 @section('main')
-    <main>
         <h1>Add New Product</h1>
         <form class="" method="POST" action="/add_product" enctype="multipart/form-data">
             @csrf
