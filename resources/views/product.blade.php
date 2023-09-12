@@ -41,5 +41,6 @@
                 @endforeach
             </tbody>
         </table>
+        {{ $prod->onEachSide(1)->links() }}
     </main>
 @endsection

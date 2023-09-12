@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -22,7 +23,8 @@ class ProductController extends Controller
     function getProducts($category)
     {
         $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return view('product', ['prod' => $data]);
+        return view('product', ['prod' => Product::paginate(6)]);
+        //return ProductResource::collection(Product::all());
     }
     function ProductsForSale($category)
     {
