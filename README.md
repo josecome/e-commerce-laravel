@@ -15,7 +15,11 @@ Products in Chart
 
 <img src="public/cart.jpg">
 
-Dashboar for Managers
+Add or edit product
+
+<img src="public/list_of_products.jpg">
+
+Dashboard for Managers
 
 <img src="public/dashboard_chart.jpg">
 
