@@ -13,6 +13,7 @@ use App\Models\ProdCategories;
 use App\Models\Product;
 use App\http\Traits\saveImages;
 use App\http\Traits\RecordsEvents;
+use Illuminate\Support\Facades\Cache;
 use Exception;
 
 class ProductController extends Controller
@@ -22,8 +23,8 @@ class ProductController extends Controller
 
     function getProducts($category)
     {
-        $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return view('product', ['prod' => Product::paginate(6)]);
+        $data = Product::where('category', $category)->paginate(6);
+        return view('product', ['prod' => $data]);
         //return ProductResource::collection(Product::all());
     }
     function ProductsForSale($category)
@@ -32,8 +33,18 @@ class ProductController extends Controller
     }
     function ProductsForSaleList($category)
     {
-        $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return json_decode($data);
+
+        $Product_list = null;
+        $Product_list = Cache::remember('pull-requests-product-list', 60, function () use ($category) {
+            return DB::table('products')->select('*')->where('category', $category)->get();
+        });
+        //if(!Cache::has('pull-requests-product-list')) {
+        //    $Product_list = DB::table('products')->select('*')->where('category', $category)->get();
+        //    Cache::set('pull-requests-product-list', $Product_list, 60);
+        //} else {
+        //    $Product_list = Cache::get('pull-requests-product-list');
+        //}
+        return json_decode($Product_list);
     }
     function addNewProduct(Request $req)
     {
