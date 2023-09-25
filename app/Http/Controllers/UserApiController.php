@@ -18,7 +18,10 @@ class UserApiController extends Controller
 
         $user = User::where('email',  $req->email)->firstOrFail();
 
-        auth()->user()->tokens()->delete();
+        //auth()->user()->tokens()->delete();
+        auth()->user()->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -51,7 +54,14 @@ class UserApiController extends Controller
         //Session::flush();
         //Auth::logout();
         //return redirect('login');
-        $req->user()->currentAccessToken()->delete();
-        return 'logged out';
+        /*$req->user()->currentAccessToken()->delete();
+        return 'logged out';*/
+        auth()->user()->tokens->each(function ($token, $key) {
+            $token->delete();
+        });
+        return response()->json([
+               'message' => 'Logged out successfully!',
+               'status_code' => 200
+           ], 200);
     }
 }
