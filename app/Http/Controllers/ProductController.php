@@ -31,6 +31,9 @@ class ProductController extends Controller
     {
         return view('/products_for_sale');
     }
+    function ProductsForSaleAll() {
+        return view('/products_for_sale_all');
+    }
     function ProductsForSaleList($category)
     {
 
@@ -44,6 +47,13 @@ class ProductController extends Controller
         //} else {
         //    $Product_list = Cache::get('pull-requests-product-list');
         //}
+        return json_decode($Product_list);
+    }
+    function ProductsForSaleListAll() {
+        $Product_list = null;
+        $Product_list = Cache::remember('pull-requests-product-list-all', 60, function () {
+            return DB::table('products')->select('*')->orderByRaw('RAND()')->take(20)->get();
+        });
         return json_decode($Product_list);
     }
     function addNewProduct(Request $req)

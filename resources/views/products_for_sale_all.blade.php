@@ -49,14 +49,9 @@
             <div class="container">
                 <div id="app" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                     <div style="height: 60px; width: 100%; background-color: #EAEDED;">
-                        <span style="float: left; font-size: 28px; padding: 8px;"><strong>
+                        <span style="float: left; font-size: 28px; padding: 8px;">
+                            <strong>
                                 Available Products
-                                <select v-model="selected_category">
-                                    <option disabled value="">Other category</option>
-                                    <option v-for="category in category_options" :value="category">
-                                        [[ category ]]
-                                    </option>
-                                </select>
                             </strong></span>
                         <a href="#" class="notification" style="float: right; padding: 8px;" data-toggle="modal"
                             data-target="#cartModal">
@@ -287,7 +282,7 @@
                 },
                 async created() {
                     try {
-                        const rs = await axios.get('/products_for_sale_all_list }}')
+                        const rs = await axios.get('/products_for_sale_all_list')
                         this.list_of_products = rs.data
                     } catch (err) {
                         console.log(err)

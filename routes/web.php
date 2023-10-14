@@ -48,9 +48,17 @@ Route::get(
     [ProductController::class, 'ProductsForSale']
 )->name('products_for_sale');
 Route::get(
+    '/products_for_sale_all',
+    [ProductController::class, 'ProductsForSaleAll']
+)->name('products_for_sale_all');
+Route::get(
     '/products_for_sale_list/{category}',
     [ProductController::class, 'ProductsForSaleList']
 )->name('products_for_sale_list');
+Route::get(
+    '/products_for_sale_all_list',
+    [ProductController::class, 'ProductsForSaleListAll']
+)->name('products_for_sale_all_list');
 
 Route::post(
     '/add_product_in_cart',
