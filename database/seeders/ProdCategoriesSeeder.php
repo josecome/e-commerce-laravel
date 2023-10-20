@@ -16,22 +16,6 @@ class ProdCategoriesSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('prod_categories')->insert([
-            [
-                'category'=>'TV',
-                "description"=>"All sizes",
-                "user_id"=>1
-            ],
-            [
-                'category'=>'CellPhone',
-                "description"=>"All sizes",
-                "user_id"=>1
-            ],
-            [
-                'category'=>'Tables',
-                "description"=>"All sizes",
-                "user_id"=>1
-            ]
-        ]);
+        \App\Models\ProdCategories::factory(16)->create();
     }
 }
