@@ -16,11 +16,15 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
-        $category_code = \App\Models\ProdCategories::pluck('code')->toArray();
+        $min = 200;
+        $max = 400;
+        $category_code = \App\Models\ProdCategory::pluck('category')->toArray();
         return [
             'product' => str_replace(' ', '', $this->faker->unique()->text($maxNbChars = 16)),
             'description' => $this->faker->text($maxNbChars = 26),
-            'district' => $category_code[array_rand($category_code)],
+            'price' => mt_rand ($min*10, $max*10) / 10,
+            'category' => $category_code[array_rand($category_code)],
+            'image_link' => $this->faker->text($maxNbChars = 20),
             'user_id' => random_int(1, 6)
         ];
     }

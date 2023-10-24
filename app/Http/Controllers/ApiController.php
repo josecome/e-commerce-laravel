@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use App\Models\ProdCategories;
+use App\Models\ProdCategory;
 use App\Models\Product;
 use App\Models\Cart;
 use App\Mail\OrderPurchases;
@@ -23,7 +23,7 @@ class ApiController extends Controller
     use RecordsEvents;
     function getCategories()
     {
-        $data = ProdCategories::all();
+        $data = ProdCategory::all();
         return json_decode($data);
     }
     function getListCategories()
@@ -49,7 +49,7 @@ class ApiController extends Controller
         }
         if (!$req->filled('id')) {
             try {
-                $ctgry = new ProdCategories;
+                $ctgry = new ProdCategory;
                 $ctgry->category = $req->category;
                 $ctgry->description = $req->description;
                 $ctgry->image_link = $filename;
@@ -65,7 +65,7 @@ class ApiController extends Controller
             }
         } else {
             try {
-                $category_product = ProdCategories::updateOrCreate(
+                $category_product = ProdCategory::updateOrCreate(
                     ['id' => $req->id],
                     [
                         'category' => $req->category, 'description' => $req->description,
@@ -73,7 +73,7 @@ class ApiController extends Controller
                     ]
                 );
                 $result = $category_product->wasChanged() ? "updated" : "not updated";
-                $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
+                $event_reg = $this->addNewCategoryEvent(ProdCategory::find($req->id));
                 return response()->json([
                     'success' => $result
                 ]);

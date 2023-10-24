@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class ProdCategoriesSeeder extends Seeder
+class ProdCategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +16,6 @@ class ProdCategoriesSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\ProdCategories::factory(16)->create();
+        \App\Models\ProdCategory::factory(16)->create();
     }
 }

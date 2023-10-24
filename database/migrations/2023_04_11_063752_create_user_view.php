@@ -29,7 +29,7 @@ return new class extends Migration
     private function createView(): string
     {
         return
-            "CREATE VIEW view_users As SELECT *, (YEAR(NOW()) - YEAR(date_of_birth)) AS age FROM users"
+            "CREATE OR REPLACE VIEW view_users AS SELECT *, (YEAR(NOW()) - YEAR(date_of_birth)) AS age FROM users"
         ;
     }
 };

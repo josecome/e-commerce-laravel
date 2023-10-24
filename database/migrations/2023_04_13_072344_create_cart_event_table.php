@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
         });*/
-        DB::statement('CREATE TABLE cart_event LIKE cart');
+        DB::statement('CREATE TABLE carts_event LIKE carts');
     }
 
     /**
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_event');
+        Schema::dropIfExists('carts_event');
     }
 };

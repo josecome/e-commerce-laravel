@@ -7,7 +7,7 @@ use App\Models\Cart;
 use App\Models\CartEvent;
 use App\Models\Product;
 use App\Models\ProductEvent;
-use App\Models\ProdCategories;
+use App\Models\ProdCategory;
 use App\Models\ProdCategoryEvent;
 use Exception;
 
@@ -48,7 +48,7 @@ trait RecordsEvents {
         }
         return 'event_inserted';
     }
-    function addNewCategoryEvent(ProdCategories $category)
+    function addNewCategoryEvent(ProdCategory $category)
     {
         $userId = Auth::id();
         try{
