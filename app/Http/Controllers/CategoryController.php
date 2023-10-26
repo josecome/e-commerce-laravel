@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use App\Models\ProdCategories;
+use App\Models\ProdCategory;
 use App\Models\Product;
 use App\http\Traits\saveImages;
 use App\http\Traits\RecordsEvents;
@@ -21,7 +21,7 @@ class CategoryController extends Controller
     use RecordsEvents;
     function getCategories()
     {
-        $data = ProdCategories::all();
+        $data = ProdCategory::all();
         return view('home', ['prodcat' => $data]);
     }
     function getListCategories()
@@ -47,7 +47,7 @@ class CategoryController extends Controller
         }
         if (!$req->filled('id')) {
             try {
-                $ctgry = new ProdCategories;
+                $ctgry = new ProdCategory;
                 $ctgry->category = $req->category;
                 $ctgry->description = $req->description;
                 $ctgry->image_link = $filename;
@@ -61,7 +61,7 @@ class CategoryController extends Controller
             }
         } else {
             try {
-                $category_product = ProdCategories::updateOrCreate(
+                $category_product = ProdCategory::updateOrCreate(
                     ['id' => $req->id],
                     [
                         'category' => $req->category, 'description' => $req->description,
@@ -69,7 +69,7 @@ class CategoryController extends Controller
                     ]
                 );
                 $result = $category_product->wasChanged() ? "updated" : "not updated";
-                $event_reg = $this->addNewCategoryEvent(ProdCategories::find($req->id));
+                $event_reg = $this->addNewCategoryEvent(ProdCategory::find($req->id));
                 return back()->with('success', $result);
             } catch (Exception $e) {
                 $result = 'Error ocurred: ' . $e->getMessage();
