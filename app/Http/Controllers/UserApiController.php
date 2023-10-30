@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLoginHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,8 @@ class UserApiController extends Controller
         });
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        //User from API authenticated, event will be triggered
+        $this->user_authenticated();
 
         return response()->json([
             'user' => $user,
@@ -48,7 +51,13 @@ class UserApiController extends Controller
             'loggedin' => 1
         ]);
     }
+    protected function user_authenticated() {
 
+        $user = Auth::user();
+        $user_model = User::find($user->id);
+
+        event(new UserLoginHistory($user_model));
+    }
     public function logout(Request $req)
     {
         //Session::flush();
