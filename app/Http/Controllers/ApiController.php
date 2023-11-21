@@ -14,6 +14,7 @@ use App\Mail\OrderPurchases;
 use App\http\Traits\dataFromStore;
 use Illuminate\Support\Facades\Mail;
 use App\http\Traits\RecordsEvents;
+use App\Http\Resources\ProdCategoryResource;
 use Exception;
 
 class ApiController extends Controller
@@ -86,20 +87,17 @@ class ApiController extends Controller
         }
         //return Redirect::to('/add_successfull?p=' . $result);
     }
-    function getProducts($category)
+    function getProducts(string $category)
     {
-        $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return json_decode($data);
+        return new ProdCategoryResource(ProdCategory::where('category', '=', $category)->firstOrFail());
     }
-    function ProductsForSale($category)
+    function ProductsForSale(string $category)
     {
-        $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return json_decode($data);
+        return new ProdCategoryResource(ProdCategory::where('category', '=', $category)->firstOrFail());
     }
     function ProductsForSaleList($category)
     {
-        $data = DB::table('products')->select('*')->where('category', $category)->get();
-        return json_decode($data);
+        return new ProdCategoryResource(ProdCategory::where('category', '=', $category)->firstOrFail());
     }
     function addNewProductForm(Request $req)
     {
@@ -115,9 +113,9 @@ class ApiController extends Controller
         }
         return json_decode($data);
     }
-    function getProductsInCart(Cart $cart)
+    function getProductsInCart(request $req, int $id)
     {
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
     function addNewProductInCart(Request $req)
     {

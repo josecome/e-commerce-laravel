@@ -18,7 +18,7 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public $table = "cart";
+    public $table = "carts";
     public function eventcarts(): HasMany
     {
         return $this->hasMany(CartEvent::class);

@@ -38,7 +38,7 @@ class StoreLoginHistory
         $input['name'] = $current_user->name;
         $input['email'] = $current_user->email;
         $input['last_login_time'] = $lastLoginTime;
-        Mail::to($current_user->email)->send(new UserLogin($current_user));
+        //Mail::to($current_user->email)->send(new UserLogin($current_user));
         return userLoginHistoryModel::create($input);
     }
 }

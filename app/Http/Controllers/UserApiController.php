@@ -20,9 +20,9 @@ class UserApiController extends Controller
         $user = User::where('email',  $req->email)->firstOrFail();
 
         //auth()->user()->tokens()->delete();
-        auth()->user()->tokens->each(function ($token, $key) {
+        /*auth()->user()->tokens->each(function ($token, $key) {
             $token->delete();
-        });
+        });*/
 
         $token = $user->createToken('auth_token')->plainTextToken;
         //User from API authenticated, event will be triggered
