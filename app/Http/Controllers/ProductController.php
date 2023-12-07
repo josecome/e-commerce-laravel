@@ -61,7 +61,7 @@ class ProductController extends Controller
         if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
-        $result = "Record Successfully added!";
+        $result = config('constants.options.success_insert');
         $type_of_item = "products";
         $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
@@ -80,7 +80,7 @@ class ProductController extends Controller
                 $prod->save();
                 $event_reg = $this->addNewProductEvent($prod);
             } catch (Exception $e) {
-                $result = 'Error ocurred: ' . $e->getMessage();
+                $result = config('constants.options.error') . ': ' . $e->getMessage();
             }
         } else { //Record exist in data base
             try {
@@ -94,7 +94,7 @@ class ProductController extends Controller
                 $result = $product->wasChanged() ? "updated" : "not updated";
                 $event_reg = $this->addNewProductEvent(Product::find($req->id));
             } catch (Exception $e) {
-                $result = 'Error ocurred: ' . $e->getMessage();
+                $result = config('constants.options.error') . ': ' . $e->getMessage();
             }
         }
         $type_of_result = "sucess";

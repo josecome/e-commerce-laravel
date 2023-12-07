@@ -31,7 +31,7 @@ class CategoryController extends Controller
     }
     function addNewCategory(Request $req)
     {
-        $result = "Record Successfully added!";
+        $result = config('constants.options.success_insert');
         if (!Gate::allows('isAdmin') && !Gate::allows('isManager')) {
             abort(403);
         }
@@ -40,7 +40,6 @@ class CategoryController extends Controller
         //$user = Auth::user();
 
         $type_of_item = "prod_categories";
-        $userId = Auth::id();
         $filename = $this->categories_products_image($req,  $type_of_item);
         if ($filename === "No file") {
             $filename = $req->image_link;
@@ -56,7 +55,7 @@ class CategoryController extends Controller
                 $event_reg = $this->addNewCategoryEvent($ctgry);
                 return back()->with('success', $result);
             } catch (Exception $e) {
-                $result = 'Error ocurred: ' . $e->getMessage();
+                $result = config('constants.options.error') . ': ' . $e->getMessage();
                 return back()->with('error', $result);
             }
         } else {
@@ -72,7 +71,7 @@ class CategoryController extends Controller
                 $event_reg = $this->addNewCategoryEvent(ProdCategory::find($req->id));
                 return back()->with('success', $result);
             } catch (Exception $e) {
-                $result = 'Error ocurred: ' . $e->getMessage();
+                $result = config('constants.options.error') . ': ' . $e->getMessage();
                 return back()->with('error', $result);
             }
         }

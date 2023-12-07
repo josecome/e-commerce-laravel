@@ -136,7 +136,7 @@ class ApiController extends Controller
             return 'Error ocurred: ' . $e->getMessage();
         }
         $event_reg = $this->addNewCartEvent($cart);
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
     function cartUpdate(Request $req, $id)
     {
@@ -150,9 +150,9 @@ class ApiController extends Controller
         } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
-    function deleteItemInCart($id)
+    function deleteItemInCart(Request $req, int $id)
     {
         $cart = Cart::find($id);
         $this->authorize('update', $cart);
@@ -162,7 +162,7 @@ class ApiController extends Controller
         } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
     function Paid(Request $req)
     {

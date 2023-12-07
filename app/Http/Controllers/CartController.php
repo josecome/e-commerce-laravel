@@ -18,9 +18,9 @@ class CartController extends Controller
 {
     use dataFromStore;
     use RecordsEvents;
-    function getProductsInCart(Cart $cart)
+    function getProductsInCart(Request $req, Cart $cart)
     {
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
     function addNewProductInCart(Request $req)
     {
@@ -41,7 +41,7 @@ class CartController extends Controller
             return 'Error ocurred: ' . $e->getMessage();
         }
         $event_reg = $this->addNewCartEvent($cart);
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
     function cartUpdate(Request $req, $id)
     {
@@ -55,9 +55,9 @@ class CartController extends Controller
         } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
-    function deleteItemInCart($id)
+    function deleteItemInCart(Request $req, $id)
     {
         $cart = Cart::find($id);
         $this->authorize('update', $cart);
@@ -67,7 +67,7 @@ class CartController extends Controller
         } catch (Exception $e) {
             return 'Error ocurred' . $e->getMessage();
         }
-        return $this->getListOfProductsInCart();
+        return $this->getListOfProductsInCart($req);
     }
     function Paid(Request $req)
     {
@@ -81,11 +81,11 @@ class CartController extends Controller
                 'purchased' => 1
             ]);
         } catch (Exception $e) {
-            return 'Error ocurred';
+            return config('constants.options.error');
         }
         $user = User::find(Auth::id());
         Mail::to($user)->send(new OrderPurchases($cart));
 
-        return 'updated';
+        return config('constants.options.updated');
     }
 }
