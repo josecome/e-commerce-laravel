@@ -98,7 +98,7 @@ Route::get('/email_template_test', function () { //Only for test purpose
     return new OrderPurchases($cart);
 });
 
-Route::get('/logout', [UserController::class, 'logout']);
+Route::post('/logout', [UserController::class, 'logout']);
 
 Route::get('/dashboard', function (Request $req) {
     //$req->session()->put('user', $user);
@@ -122,6 +122,10 @@ Route::get('/login/facebook/callback', [UserController::class, 'handleFacebookCa
 //Github
 Route::get('/login/github', [UserController::class, 'redirectToGithub'])->name('login.github');
 Route::get('/login/github/callback', [UserController::class, 'handleGithubCallback']);
+
+Route::get('/social_login', function (Request $req) {
+    return view('social_login');
+});
 
 
 require __DIR__ . '/auth.php';
