@@ -6,6 +6,7 @@ use Laravel\Socialite\Facades\Socialite;
 namespace App\Http\Controllers;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -45,5 +46,12 @@ class UserController extends Controller
       $user = Socialite::driver('github')->user();
       $this->_registerorLoginUser($user);
       return redirect()->route('home');
+    }
+    function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+
+        return Redirect::to('/');
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Controllers;
+use App\Http\Controllers\UserController;
 use App\Mail\OrderPurchases;
 use App\Models\Cart;
 use Illuminate\Http\Request;
@@ -97,7 +98,7 @@ Route::get('/email_template_test', function () { //Only for test purpose
     return new OrderPurchases($cart);
 });
 
-Route::get('/logout', [Controllers::class, 'logout']);
+Route::get('/logout', [UserController::class, 'logout']);
 
 Route::get('/dashboard', function (Request $req) {
     //$req->session()->put('user', $user);
@@ -109,5 +110,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//Social Login Page
+Route::get('/login_social', [UserController::class, 'login_social'])->name('login_social');
+//Google
+Route::get('/login/google', [UserController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [UserController::class, 'handleGoogleCallback']);
+//Facebook
+Route::get('/login/facebook', [UserController::class, 'redirectToFacebook'])->name('login.facebook');
+Route::get('/login/facebook/callback', [UserController::class, 'handleFacebookCallback']);
+//Github
+Route::get('/login/github', [UserController::class, 'redirectToGithub'])->name('login.github');
+Route::get('/login/github/callback', [UserController::class, 'handleGithubCallback']);
+
 
 require __DIR__ . '/auth.php';
