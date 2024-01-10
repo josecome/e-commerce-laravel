@@ -60,16 +60,11 @@ class CategoryController extends Controller
             }
         } else {
             try {
-                $category_product = ProdCategory::updateOrCreate(
-                    ['id' => $req->id],
-                    [
-                        'category' => $req->category, 'description' => $req->description,
-                        'image_link' => $filename, 'user_id' => $userId
-                    ]
-                );
-                $result = $category_product->wasChanged() ? "updated" : "not updated";
-                $event_reg = $this->addNewCategoryEvent(ProdCategory::find($req->id));
-                return back()->with('success', $result);
+                ProdCategory::find($req->id)->update([
+                    'category' => $req->category, 'description' => $req->description,
+                    'image_link' => $filename, 'user_id' => $userId
+                ]);
+                return redirect('/')->with('success', $result);
             } catch (Exception $e) {
                 $result = config('constants.options.error') . ': ' . $e->getMessage();
                 return back()->with('error', $result);
