@@ -68,12 +68,16 @@
                         <div class="card shadow-sm">
                             <text x="80%" y="80%" fill="#eceeef" dy=".3em">
                                 <img :src="['/storage/images/products/' + product_item.image_link]"
-                                    :title="[product_item.product]" style="width: 100%; height: 100%;" data-toggle="modal"
-                                    data-target="#productModal"
-                                    @click="setSelectedProduct(product_item.product, product_item.description, product_item.image_link)" />
+                                    :title="[product_item.product]" style="width: 100%; height: 100%;"
+                                    @click="productdetail(product_item.product)" />
                             </text></svg>
                             <div class="card-body" style='background-color: #D4E6F1;'>
-                                <p class="card-text">[[ product_item.description ]]</p>
+                                <p class="card-text">
+                                    <a :href="'/product_detail/' + product_item.product"
+                                        style="text-decoration: none; color: gray;">
+                                        [[ product_item.description ]]
+                                    </a>
+                                </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
                                         <button type="button"
@@ -323,6 +327,9 @@
                     }
                 },
                 methods: {
+                    productdetail(v) {
+                        location.replace('/product_detail/' + v)
+                    },
                     setSelectedProduct: function(s_prod, s_desc, s_link) {
                         this.selected_product = s_prod;
                         this.selected_description = s_desc;

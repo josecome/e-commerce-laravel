@@ -116,4 +116,7 @@ class ProductController extends Controller
         }
         return view('/product_form', ['prod' => $data]);
     }
+    function getProductDetail(Request $req, string $prod) {
+        return view('/product_detail', ['prod' => $prod]);
+    }
 }

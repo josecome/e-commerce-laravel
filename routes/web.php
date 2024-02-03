@@ -70,6 +70,11 @@ Route::get(
     '/productincart/{userid}',
     [CartController::class, 'getProductsInCart']
 )->middleware('auth')->name('productincart');
+Route::get(
+    '/product_detail/{userid}',
+    [ProductController::class, 'getProductDetail']
+)->middleware('auth')->name('product_detail');
+
 
 Route::middleware('auth')->group(function () {
     Route::patch('/cartupdate/{itemid}', [CartController::class, 'cartUpdate'])->name('cartupdate');
