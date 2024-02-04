@@ -242,8 +242,9 @@
                                     </table>
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="/confirm_payment" method="POST"
+                                    <form action="/paypal/confirm_payment" method="POST"
                                         v-show="purchase_status === 'Purchase'">
+                                        @csrf
                                         <input type="hidden" name="ids" v-model="Ids_of_Products_in_Cart" />
                                         <input type="hidden" name="totalprice" value="[[ total_price_to_pay ]]" />
                                         <button type="submit" class="btn btn-danger">Purchase</button>

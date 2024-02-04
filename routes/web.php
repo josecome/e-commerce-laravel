@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Controllers;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Mail\OrderPurchases;
 use App\Models\Cart;
@@ -132,5 +133,13 @@ Route::get('/social_login', function (Request $req) {
     return view('social_login');
 });
 
+Route::controller(PaymentController::class)
+    ->prefix('paypal')
+    ->group(function () {
+        Route::post('confirm_payment', 'paypalIndex')->name('confirm_payment');
+        Route::post('handle-payment', 'handlePayment')->name('make.payment');
+        Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
+        Route::get('payment-success', 'paymentSuccess')->name('success.payment');
+    });
 
 require __DIR__ . '/auth.php';
