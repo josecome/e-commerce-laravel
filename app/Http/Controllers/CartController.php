@@ -60,7 +60,7 @@ class CartController extends Controller
     function deleteItemInCart(Request $req, $id)
     {
         $cart = Cart::find($id);
-        $this->authorize('update', $cart);
+        //$this->authorize('update', $cart);
 
         try {
             Cart::find($id)->delete();

@@ -27,7 +27,11 @@
                                     </a>
                                 </text>
                                 <div class="card-body">
-                                    <p class="card-text">{{ $row->description }}</p>
+                                    <p class="card-text">
+                                        <a href="{{ URL('/products_for_sale/' . $row->category) }}" class="no_decoration_gray">
+                                            {{ $row->description }}
+                                        </a>
+                                    </p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <i class="bi bi-pencil-square" style="padding-right: 16px;" data-toggle="modal"
