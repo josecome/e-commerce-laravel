@@ -5,14 +5,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Models\Payment;
+use App\Models\Cart;
 use Carbon\Carbon;
 use Exception;
 
 class PaymentController extends Controller
 {
     public function paypalIndex(Request $request) {
-        return view('paypal/index');
+        $userId = Auth::id();
+        $amount = DB::table('carts')->where('user_id', '=', $userId
+        )->where('purchased', '=', 0
+        )->sum('totalprice');
+        $amount = number_format( $amount , 0 , '.' , ',' );
+        return view('paypal/index', ['amount' => $amount]);
     }
     public function handlePayment(Request $request)
     {

@@ -117,7 +117,8 @@ class ProductController extends Controller
         return view('/product_form', ['prod' => $data]);
     }
     function getProductDetail(Request $req, string $prod) {
-        $id = Product::query()->where('product', $prod)->value('id');
-        return view('/product_detail', ['id' => $id, 'prod' => $prod]);
+        //$id = Product::query()->where('product', $prod)->value('id');
+        $data = Product::where('product', $prod)->first();
+        return view('/product_detail', ['data' => $data]);
     }
 }

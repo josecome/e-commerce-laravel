@@ -25,18 +25,18 @@
         </div>
         <div style="display: table-cell; vertical-align: top;">
             <div style="margin-top: 40px;">
-                <a href="{{ route('products_for_sale', $prod) }}" class="no_decoration_gray"
+                <a href="{{ route('products_for_sale', $data->category) }}" class="no_decoration_gray"
                  style="font-size: 32px;"
                 >
                     <i class="bi bi-arrow-return-left"></i> Return
                 </a>
                 <h1>TV 200</h1><br />
-                <strong style="font-size: 32px; margin: 10px;">$286</strong><br /><br />
+                <strong style="font-size: 32px; margin: 10px;">{{ '$' . $data->price }}</strong><br /><br />
                 <button type="button" class="btn btn-secondary" style="margin-right: 10px;"><i class="bi bi-heart"></i> Add to favorites</button>
                 <button type="button"
                     :class="button_status ? 'btn btn-success' : 'btn btn-danger'"
                     class="btn btn-success"
-                    @click="checkProduct($event, '{{ $id }}')"
+                    @click="checkProduct($event, '{{ $data->id }}')"
                     >
                     <i class="bi bi-cart"></i>
                     @{{ button_status ? 'Add to Cart' : 'Remove from Cart' }}
@@ -44,7 +44,7 @@
                 <br /><br />
                 <strong style="margin-bottom: 40px;">Description</strong><br />
                 <div style="margin-bottom: 40px;">
-                    kdkd sllsks lslks lsksks lkssl lkssl
+                    {{ $data->description }}
                 </div>
             </div>
         </div>
