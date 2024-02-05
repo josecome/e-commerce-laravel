@@ -48,11 +48,11 @@ class PaymentController extends Controller
                 }
             }
             return redirect()
-                ->route('premium_registration')
+                ->route('cancel.payment')
                 ->with('error', 'Something went wrong.');
         } else {
             return redirect()
-                ->route('premium_registration')
+                ->route('confirm_payment')
                 ->with('error', $response['message'] ?? 'Something went wrong.');
         }
     }
@@ -60,7 +60,7 @@ class PaymentController extends Controller
     public function paymentCancel()
     {
         return redirect()
-            ->route('premium_registration')
+            ->route('home')
             ->with('error', $response['message'] ?? 'You have canceled the transaction.');
     }
 
@@ -74,20 +74,19 @@ class PaymentController extends Controller
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
             try {
                 $pmnt = new Payment;
-                $pmnt->subscription_type = 1;
+                $pmnt->cart_payment_id = $request->cart_payment_id;
                 $pmnt->amount = $request->amount;
-                $pmnt->paid_by_user = 1;
                 $pmnt->user_id = $userId;
                 $pmnt->save();
             } catch (Exception $e) {
                 Storage::disk('local')->put('_' . $userId . '_' . Carbon::today() . '_payment_failed_to_save_in_db.txt', 'User: ' . $userId . ', Amount: ' . $request->amount);
             }
             return redirect()
-                ->route('home')
+                ->route('receipt')
                 ->with('success', 'Transaction complete.');
         } else {
             return redirect()
-                ->route('premium_registration')
+                ->route('confirm_payment')
                 ->with('error', $response['message'] ?? 'Something went wrong.');
         }
     }

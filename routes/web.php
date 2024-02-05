@@ -141,5 +141,6 @@ Route::controller(PaymentController::class)
         Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
         Route::get('payment-success', 'paymentSuccess')->name('success.payment');
     });
+Route::get('/receipt', [CartController::class, 'receipt'])->name('receipt');
 
 require __DIR__ . '/auth.php';

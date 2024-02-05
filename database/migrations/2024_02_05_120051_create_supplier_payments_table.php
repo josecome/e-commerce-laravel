@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('supplier_payments', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount', 10, 2);
-            $table->unsignedBigInteger('cart_payment_id');
+            $table->string('payment_amount');
+            $table->string('payment_method');
+            $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->foreign('cart_payment_id')->references('payment_id')->on('carts')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('supplier_payments');
     }
 };

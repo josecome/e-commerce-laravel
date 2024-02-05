@@ -88,4 +88,8 @@ class CartController extends Controller
 
         return config('constants.options.updated');
     }
+    public function receipt(Request $req) {
+        $cart = Cart::find(Auth::id());
+        return view('receipt', ['cart' => $cart]);
+    }
 }

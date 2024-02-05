@@ -27,6 +27,7 @@ class CartFactory extends Factory
             'price' => mt_rand ($min*10, $max*10) / 10,
             'purchased' => random_int(0, 1),
             'category' => $category_code[array_rand($category_code)],
+            'payment_id' => random_int(1, 99999),
             'user_id' => random_int(1, 6)
         ];
     }
