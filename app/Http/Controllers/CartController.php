@@ -89,7 +89,12 @@ class CartController extends Controller
         return config('constants.options.updated');
     }
     public function receipt(Request $req) {
-        $cart = Cart::find(Auth::id());
-        return view('receipt', ['cart' => $cart]);
+        $userId = Auth::id();
+        $cart = Cart::where('user_id', '=' , $userId)->get();
+        $amount = DB::table('carts')->where('user_id', '=', $userId
+        )->where('purchased', '=', 0
+        )->sum('totalprice');
+        $amount = number_format( $amount , 0 , '.' , ',' );
+        return view('receipt', ['cart' => $cart, 'amount' => $amount]);
     }
 }
