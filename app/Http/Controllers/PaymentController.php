@@ -19,7 +19,8 @@ class PaymentController extends Controller
         )->where('purchased', '=', 0
         )->sum('totalprice');
         $amount = number_format( $amount , 0 , '.' , ',' );
-        return view('paypal/index', ['amount' => $amount]);
+        $ids = $request->ids;
+        return view('paypal/index', ['amount' => $amount, 'ids' => $ids]);
     }
     public function handlePayment(Request $request)
     {
@@ -74,10 +75,16 @@ class PaymentController extends Controller
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
             try {
                 $pmnt = new Payment;
-                $pmnt->cart_payment_id = $request->cart_payment_id;
                 $pmnt->amount = $request->amount;
                 $pmnt->user_id = $userId;
                 $pmnt->save();
+                DB::table('carts')->whereIn(
+                    'id',
+                    array_map('intval', explode(',', $request->ids))
+                )->update([
+                    'payment_id' => $pmnt->id,
+                    'purchased' => 1
+                ]);
             } catch (Exception $e) {
                 Storage::disk('local')->put('_' . $userId . '_' . Carbon::today() . '_payment_failed_to_save_in_db.txt', 'User: ' . $userId . ', Amount: ' . $request->amount);
             }

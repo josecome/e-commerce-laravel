@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('carts', function (Blueprint $table) {
             $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('payment_id')->references('id')->on('payments');
         });
     }
 

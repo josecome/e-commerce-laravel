@@ -16,11 +16,10 @@ class PaymentFactory extends Factory
      */
     public function definition()
     {
-        $payment_ids = \App\Models\Cart::pluck('payment_id')->toArray();
+        $user_ids = \App\Models\User::pluck('id')->toArray();
         return [
             'amount' => $this->faker->randomFloat(2, 100, 9999),
-            'cart_payment_id' => $payment_ids[array_rand($payment_ids)],
-            'user_id' => random_int(1, 6)
+            'user_id' => $user_ids[array_rand($user_ids)]
         ];
     }
 }

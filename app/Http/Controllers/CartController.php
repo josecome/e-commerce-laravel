@@ -74,7 +74,7 @@ class CartController extends Controller
         $cart = Cart::find(Auth::id());
         $this->authorize('update', $cart);
         try {
-            DB::table('cart')->whereIn(
+            DB::table('carts')->whereIn(
                 'id',
                 array_map('intval', explode(',', $req->ids))
             )->update([

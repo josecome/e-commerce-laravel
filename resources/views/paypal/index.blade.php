@@ -19,6 +19,8 @@
                 <span style="font-size: 32px; margin-right: 10px; color: gray;">
                     Amount: <strong style="color: blue;">{{ '$' . $amount }}</strong>
                 </span>
+                <input type="hidden" name="ids" value="{{ $ids }}" />
+                <input type="hidden" name="amount" value="{{ $amount }}" />
                 <a href="{{ route('make.payment') }}" class="no_decoration_gray" style="font-size: 28px;">
                     Pay with PayPal👉
                 </a>

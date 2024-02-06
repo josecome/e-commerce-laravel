@@ -16,13 +16,14 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
+        $user_ids = \App\Models\User::pluck('id')->toArray();
         return [
             'first_name' => $this->faker->text($maxNbChars = 26),
             'last_name' => $this->faker->text($maxNbChars = 26),
             'city' => $this->faker->text($maxNbChars = 26),
             'state' => $this->faker->text($maxNbChars = 26),
             'country' => $this->faker->text($maxNbChars = 26),
-            'user_id' => random_int(1, 6)
+            'user_id' => $user_ids[array_rand($user_ids)]
         ];
     }
 }

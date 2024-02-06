@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('product');
             $table->string('description');
             $table->string('category');
-            $table->unsignedBigInteger('payment_id')->unique();
+            $table->unsignedBigInteger('payment_id')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

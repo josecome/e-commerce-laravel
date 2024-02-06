@@ -16,11 +16,12 @@ class ShipperFactory extends Factory
      */
     public function definition()
     {
+        $user_ids = \App\Models\User::pluck('id')->toArray();
         return [
             'company_name' => $this->faker->text($maxNbChars = 26),
             'company_contact' => $this->faker->text($maxNbChars = 26),
             'company_email' => $this->faker->text($maxNbChars = 26),
-            'user_id' => random_int(1, 6)
+            'user_id' => $user_ids[array_rand($user_ids)]
         ];
     }
 }

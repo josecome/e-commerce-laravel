@@ -20,6 +20,7 @@ class CartFactory extends Factory
         $max = 400;
         $category_code = \App\Models\ProdCategory::pluck('category')->toArray();
         $product_code = \App\Models\Product::pluck('product')->toArray();
+        $user_ids = \App\Models\User::pluck('id')->toArray();
         return [
             'product' => $product_code[array_rand($product_code)],
             'qnty' => random_int(1, 4),
@@ -27,8 +28,7 @@ class CartFactory extends Factory
             'price' => mt_rand ($min*10, $max*10) / 10,
             'purchased' => random_int(0, 1),
             'category' => $category_code[array_rand($category_code)],
-            'payment_id' => random_int(1, 99999),
-            'user_id' => random_int(1, 6)
+            'user_id' => $user_ids[array_rand($user_ids)]
         ];
     }
 }
