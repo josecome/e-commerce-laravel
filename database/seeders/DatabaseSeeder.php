@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
         // ]);
         \App\Models\User::factory(10)->create();
         DB::table('users')->where('id', 1)->update(['email' => 'test@test.com', 'name' => 'Test User', 'role' => 'admin']);
-        //DB::unprepared("update premia set price = 28.42, type= 'Annually' where id = 2");
         //DB::table('categories')->where('id', 1)->update(['category' => 'other', 'description' => 'Music without category']);
 
 
@@ -38,5 +37,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentSeeder::class);
         $this->call(OrderDetailsSeeder::class);
         $this->call(ShipperSeeder::class);
+        DB::unprepared("update carts set totalprice = qnty * price");
+        DB::unprepared("update carts set payment_id = FLOOR(RAND() * (200-100) + 100)");
     }
 }

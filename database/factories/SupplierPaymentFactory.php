@@ -18,7 +18,7 @@ class SupplierPaymentFactory extends Factory
     {
         $user_ids = \App\Models\User::pluck('id')->toArray();
         return [
-            'payment_amount' => $this->faker->randomFloat(2, 100, 9999),
+            'payment_amount' => $this->faker->randomFloat(2, 100, 600),
             'payment_method' => $this->faker->creditCardType(),
             'supplier_id' => random_int(1, 6),
             'user_id' => $user_ids[array_rand($user_ids)]

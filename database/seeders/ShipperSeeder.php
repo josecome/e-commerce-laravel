@@ -14,6 +14,6 @@ class ShipperSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Shipper::factory(36)->create();
+        \App\Models\Shipper::factory(300)->create();
     }
 }

@@ -16,6 +16,6 @@ class ProdCategorySeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\ProdCategory::factory(12)->create();
+        \App\Models\ProdCategory::factory(20)->create();
     }
 }
